@@ -36,6 +36,8 @@
     NSString *proximity;
     
     CLLocationCoordinate2D initialCoordinate;
+    NSNumberFormatter *f;
+
     
     bool entered;
 }
@@ -102,6 +104,7 @@
     if ([[segue identifier] isEqualToString:@"toSettings"]){
         transferViewController.option = _currentOption.text;
         transferViewController.currentProximity = proximity;
+        transferViewController.currentDestination = currentDestination;
         transferViewController.delegate = self;
     }
 }
@@ -124,15 +127,23 @@
 }
 
 - (void)dataFromDestination:(NSDictionary *)data{
-    currentDestination = data;
-    NSLog(@"Dictionary: %@", [data description]);
+    if( data != NULL ){
+        currentDestination = data;
+        _destinationLocation.text = data[@"title"];
+        NSLog(@"Dictionary: %@", [data description]);
+
+        initialCoordinate.latitude = [data[@"latitude"] doubleValue];//41.6717353;
+        initialCoordinate.longitude = [data[@"longitude"] doubleValue];//-88.0689936;
+    }
+    
 }
 
 //end/////////////////////////////////////////////////////////
 
 //Start and stop corelocation services/////////////////////////////////////////////////////////
 - (void)startData{
-    if ([self.currentOption.text isEqualToString:@""]){
+    
+    if ([self.currentOption.text isEqualToString:@""] && currentDestination != NULL){
         [gotoSettings show];
         _startStop.selectedSegmentIndex = 1;
     }else{
@@ -194,11 +205,10 @@
     
     MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
     [annotation setCoordinate:initialCoordinate];
-    [annotation setTitle:@"Romeoville McDonald's"];
+    [annotation setTitle:currentDestination[@"title"]];
     [self.map addAnnotation:annotation];
 }
 
-//create an array from plist
 - (NSArray*) buildGeofenceData {
  
     NSMutableArray *geofences = [NSMutableArray array];

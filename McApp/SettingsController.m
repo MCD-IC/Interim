@@ -50,6 +50,7 @@ NSDictionary *destination;
     choosenOption.text = self.option;
     NSLog(self.option);
     
+    self.beingMonitored.text = self.currentDestination[@"title"];
     self.title = @"Settings";
 }
 

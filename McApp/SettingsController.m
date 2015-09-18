@@ -19,7 +19,6 @@
 - (IBAction)toChicago:(id)sender;
 - (IBAction)toOakBrook:(id)sender;
 
-
 @property (strong, nonatomic) IBOutlet UITextField *proximity;
 @property (strong, nonatomic) IBOutlet UILabel *beingMonitored;
 
@@ -51,7 +50,10 @@ NSDictionary *destination;
     NSLog(self.option);
     
     self.beingMonitored.text = self.currentDestination[@"title"];
+    self.proximity.text = self.currentDestination[@"radius"];
     self.title = @"Settings";
+    
+    NSLog(self.currentDestination[@"title"]);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -113,7 +115,7 @@ NSDictionary *destination;
         }else{
             NSLog(@"OK");
             self.beingMonitored.text = @"Romeoville";
-            destination = @{@"latitude":@"41.6721034", @"longitude":@"-88.0681658", @"radius":_proximity.text, @"title":@"Romeoville"};
+            destination = @{@"latitude":@"41.6721034", @"longitude":@"-88.0681658", @"radius":self.proximity.text, @"title":@"Romeoville"};
         }
     }
     
@@ -123,7 +125,7 @@ NSDictionary *destination;
         }else{
             NSLog(@"OK");
             self.beingMonitored.text = @"Chicago";
-            destination = @{@"latitude":@"41.8860837", @"longitude":@"-87.6321842", @"radius":_proximity.text, @"title":@"Chicago"};
+            destination = @{@"latitude":@"41.8860837", @"longitude":@"-87.6321842", @"radius":self.proximity.text, @"title":@"Chicago"};
         }
     }
     
@@ -133,7 +135,7 @@ NSDictionary *destination;
         }else{
             NSLog(@"OK");
             self.beingMonitored.text = @"Oak Brook";
-            destination = @{@"latitude":@"41.8477231", @"longitude":@"-87.9476483", @"radius":_proximity.text, @"title":@"Oak Brook"};
+            destination = @{@"latitude":@"41.8477231", @"longitude":@"-87.9476483", @"radius":self.proximity.text, @"title":@"Oak Brook"};
         }
     }
 }

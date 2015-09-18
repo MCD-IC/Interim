@@ -192,7 +192,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="100" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UxA-9J-WjC">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UxA-9J-WjC">
                                 <rect key="frame" x="18" y="313" width="220" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -269,7 +269,7 @@
                                 <rect key="frame" x="-17" y="114" width="371" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <state key="normal">
-                                    <string key="title">Romeoville - 1300 Marquette Dr. Romeoville. IL 60446
+                                    <string key="title">Romeoville - 1300 Marquette Dr., Romeoville, IL 60446
 41.6721034, -88.0681658</string>
                                 </state>
                                 <connections>

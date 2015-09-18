@@ -38,7 +38,6 @@
     CLLocationCoordinate2D initialCoordinate;
     NSNumberFormatter *f;
 
-    
     bool entered;
 }
 
@@ -128,36 +127,51 @@
 
 - (void)dataFromDestination:(NSDictionary *)data{
     if( data != NULL ){
-        currentDestination = data;
-        _destinationLocation.text = data[@"title"];
-        NSLog(@"Dictionary: %@", [data description]);
-
-        initialCoordinate.latitude = [data[@"latitude"] doubleValue];//41.6717353;
-        initialCoordinate.longitude = [data[@"longitude"] doubleValue];//-88.0689936;
+        if(![data[@"title"] isEqualToString:currentDestination[@"title"]]){
+            [self stopData];
+            [self resetCoordinates: data];
+        }
+        
+        if(![data[@"radius"] isEqualToString:currentDestination[@"radius"]]){
+            [self stopData];
+            [self resetCoordinates: data];
+        }
     }
+}
+
+-(void) resetCoordinates:(NSDictionary *)data{
+    currentDestination = data;
+    _destinationLocation.text = data[@"title"];
+    NSLog(@"Dictionary: %@", [data description]);
     
+    initialCoordinate.latitude = [data[@"latitude"] doubleValue];//41.6717353;
+    initialCoordinate.longitude = [data[@"longitude"] doubleValue];//-88.0689936;
 }
 
 //end/////////////////////////////////////////////////////////
 
 //Start and stop corelocation services/////////////////////////////////////////////////////////
 - (void)startData{
-    
-    if ([self.currentOption.text isEqualToString:@""] && currentDestination != NULL){
-        [gotoSettings show];
-        _startStop.selectedSegmentIndex = 1;
-    }else{
-        geofences = [self buildGeofenceData];
-        [self initializeRegionMonitoring:geofences];
+    @try{
+        if ([self.currentOption.text isEqualToString:@""]){
+            [gotoSettings show];
+            _startStop.selectedSegmentIndex = 1;
+        }else{
+            geofences = [self buildGeofenceData];
+            [self initializeRegionMonitoring:geofences];
         
-        manager.delegate = self;
-        manager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
+            manager.delegate = self;
+            manager.desiredAccuracy = kCLLocationAccuracyThreeKilometers;
         
-        [manager requestAlwaysAuthorization];
-        [manager requestWhenInUseAuthorization];
-        [manager startUpdatingLocation];
+            [manager requestAlwaysAuthorization];
+            [manager requestWhenInUseAuthorization];
+            [manager startUpdatingLocation];
       
-        [self initializeMap];
+            [self initializeMap];
+            _startStop.selectedSegmentIndex = 0;
+        }
+    }@catch(NSException *exception){
+        [gotoSettings show];
     }
 }
 
@@ -167,6 +181,7 @@
     
     [self.map setRegion:MKCoordinateRegionMakeWithDistance(initialCoordinate, 800, 800) animated:YES];
     self.map.centerCoordinate = initialCoordinate;
+    _startStop.selectedSegmentIndex = 1;
     
 }
 

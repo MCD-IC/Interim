@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:McApp.xcodeproj">
+      location = "self:/Users/mc42851/Desktop/Check-In/geofencing and wifi mcapp stuff/McApp7/McApp/McApp.xcodeproj">
    </FileRef>
 </Workspace>

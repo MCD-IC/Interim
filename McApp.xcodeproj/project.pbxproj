@@ -13,6 +13,11 @@
 		190C456A1B5547370038028B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 190C45681B5547370038028B /* Main.storyboard */; };
 		190C456C1B5547370038028B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 190C456B1B5547370038028B /* Assets.xcassets */; };
 		190C456F1B5547370038028B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 190C456D1B5547370038028B /* LaunchScreen.storyboard */; };
+		190C45771B5548860038028B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C45761B5548860038028B /* CoreLocation.framework */; };
+		190C45791B55488E0038028B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C45781B55488E0038028B /* UIKit.framework */; };
+		190C457B1B5548A30038028B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C457A1B5548A30038028B /* MapKit.framework */; };
+		190C457D1B5548AC0038028B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C457C1B5548AC0038028B /* Foundation.framework */; };
+		19E206731BA765CE00615C2D /* SettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E206721BA765CE00615C2D /* SettingsController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +30,12 @@
 		190C45691B5547370038028B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		190C456B1B5547370038028B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		190C456E1B5547370038028B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		190C45701B5547370038028B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		190C45761B5548860038028B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		190C45781B55488E0038028B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		190C457A1B5548A30038028B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		190C457C1B5548AC0038028B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		19E206711BA765CE00615C2D /* SettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsController.h; sourceTree = "<group>"; };
+		19E206721BA765CE00615C2D /* SettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +43,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				190C457D1B5548AC0038028B /* Foundation.framework in Frameworks */,
+				190C457B1B5548A30038028B /* MapKit.framework in Frameworks */,
+				190C45791B55488E0038028B /* UIKit.framework in Frameworks */,
+				190C45771B5548860038028B /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +56,10 @@
 		190C45531B5547370038028B = {
 			isa = PBXGroup;
 			children = (
+				190C457C1B5548AC0038028B /* Foundation.framework */,
+				190C457A1B5548A30038028B /* MapKit.framework */,
+				190C45781B55488E0038028B /* UIKit.framework */,
+				190C45761B5548860038028B /* CoreLocation.framework */,
 				190C455E1B5547370038028B /* McApp */,
 				190C455D1B5547370038028B /* Products */,
 			);
@@ -63,9 +81,10 @@
 				190C45651B5547370038028B /* ViewController.h */,
 				190C45661B5547370038028B /* ViewController.m */,
 				190C45681B5547370038028B /* Main.storyboard */,
+				19E206711BA765CE00615C2D /* SettingsController.h */,
+				19E206721BA765CE00615C2D /* SettingsController.m */,
 				190C456B1B5547370038028B /* Assets.xcassets */,
 				190C456D1B5547370038028B /* LaunchScreen.storyboard */,
-				190C45701B5547370038028B /* Info.plist */,
 				190C455F1B5547370038028B /* Supporting Files */,
 			);
 			path = McApp;
@@ -110,6 +129,7 @@
 				TargetAttributes = {
 					190C455B1B5547370038028B = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = WSZAJJ3TUM;
 					};
 				};
 			};
@@ -149,6 +169,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19E206731BA765CE00615C2D /* SettingsController.m in Sources */,
 				190C45671B5547370038028B /* ViewController.m in Sources */,
 				190C45641B5547370038028B /* AppDelegate.m in Sources */,
 				190C45611B5547370038028B /* main.m in Sources */,
@@ -261,10 +282,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = McApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = McDonalds.McApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = McApp;
 			};
 			name = Debug;
 		};
@@ -272,10 +295,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = McApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = McDonalds.McApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = McApp;
 			};
 			name = Release;
 		};
@@ -298,6 +323,7 @@
 				190C45751B5547370038028B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

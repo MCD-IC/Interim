@@ -18,6 +18,8 @@
 - (IBAction)toRomeoville:(id)sender;
 - (IBAction)toChicago:(id)sender;
 - (IBAction)toOakBrook:(id)sender;
+- (IBAction)set:(id)sender;
+
 
 @property (strong, nonatomic) IBOutlet UITextField *proximity;
 @property (strong, nonatomic) IBOutlet UILabel *beingMonitored;
@@ -35,10 +37,15 @@ UIAlertView *alertRomeoville;
 UIAlertView *alertChicago;
 UIAlertView *alertOakBrook;
     
+UIAlertView *setAlert;
+    
 IBOutlet UILabel *choosenOption;
 
 NSDictionary *destination;
     
+NSString *setLatitude;
+NSString *setLongitude;
+NSString *setTitle;
 }
 
 - (void)viewDidLoad {
@@ -53,7 +60,11 @@ NSDictionary *destination;
     self.proximity.text = self.currentDestination[@"radius"];
     self.title = @"Settings";
     
-    NSLog(self.currentDestination[@"title"]);
+    setLatitude = self.currentDestination[@"latitude"];
+    setLongitude = self.currentDestination[@"longitude"];
+    setTitle = self.currentDestination[@"title"];
+    
+    NSLog(self.currentDestination[@"radius"]);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,6 +75,8 @@ NSDictionary *destination;
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     //NSLog(@"Go");
+    
+    if(![choosenOption.text isEqualToString:@""])
     [_delegate dataFromChoice: choosenOption.text];
     [_delegate dataFromDestination: destination];
 }
@@ -108,6 +121,31 @@ NSDictionary *destination;
             choosenOption.text = @"D";
         }
     }
+ 
+    if(alertView == setAlert){
+        if (buttonIndex == 1) {
+            NSLog(@"Cancel");
+        }else{
+            if(![setLatitude isEqualToString:@""] && ![self.proximity.text isEqualToString:@""] && ![choosenOption.text isEqualToString:@""]){
+                NSLog(@"OK");
+                
+                @try{
+                    destination = @{@"latitude":setLatitude, @"longitude":setLongitude, @"radius":self.proximity.text, @"title":setTitle};
+                    NSLog(@"%@", destination);
+                    [self.navigationController popViewControllerAnimated:YES];
+                }@catch(NSException *exception){
+                  
+                }
+            }else{
+                alertA = [[UIAlertView alloc] initWithTitle:@"Please set all parameters: Location, Proximity, Option"
+                                                    message:@""
+                                                   delegate:self
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+                [alertA show];
+            }
+        }
+    }
     
     if(alertView == alertRomeoville){
         if (buttonIndex == 1) {
@@ -115,7 +153,10 @@ NSDictionary *destination;
         }else{
             NSLog(@"OK");
             self.beingMonitored.text = @"Romeoville";
-            destination = @{@"latitude":@"41.6721034", @"longitude":@"-88.0681658", @"radius":self.proximity.text, @"title":@"Romeoville"};
+            
+            setLatitude = @"41.6721034";
+            setLongitude = @"-88.0681658";
+            setTitle = @"Romeoville";
         }
     }
     
@@ -125,7 +166,10 @@ NSDictionary *destination;
         }else{
             NSLog(@"OK");
             self.beingMonitored.text = @"Chicago";
-            destination = @{@"latitude":@"41.8860837", @"longitude":@"-87.6321842", @"radius":self.proximity.text, @"title":@"Chicago"};
+
+            setLatitude = @"41.8860837";
+            setLongitude = @"-87.6321842";
+            setTitle = @"Chicago";
         }
     }
     
@@ -135,12 +179,16 @@ NSDictionary *destination;
         }else{
             NSLog(@"OK");
             self.beingMonitored.text = @"Oak Brook";
-            destination = @{@"latitude":@"41.8477231", @"longitude":@"-87.9476483", @"radius":self.proximity.text, @"title":@"Oak Brook"};
+            
+            setLatitude = @"41.8477231";
+            setLongitude = @"-87.9476483";
+            setTitle = @"Oak Brook";
         }
     }
 }
 
 - (IBAction)optionA:(id)sender {
+    [self.view endEditing:YES];
     alertA = [[UIAlertView alloc] initWithTitle:@"Option A"
                                           message:@"Initial GPS Location + Geofences (Regions)"
                                          delegate:self
@@ -150,6 +198,7 @@ NSDictionary *destination;
 }
 
 - (IBAction)optionB:(id)sender {
+    [self.view endEditing:YES];
     alertB = [[UIAlertView alloc] initWithTitle:@"Option B"
                                         message:@"Initial GPS Location + Geofences (Regions) + GPS Verification"
                                          delegate:self
@@ -159,6 +208,7 @@ NSDictionary *destination;
 }
 
 - (IBAction)optionC:(id)sender {
+    [self.view endEditing:YES];
     alertC = [[UIAlertView alloc] initWithTitle:@"Option C"
                                           message:@"Initial GPS Location + Significant Change Location Service"
                                          delegate:self
@@ -168,6 +218,7 @@ NSDictionary *destination;
 }
 
 - (IBAction)optionD:(id)sender {
+    [self.view endEditing:YES];
     alertD = [[UIAlertView alloc] initWithTitle:@"Option D"
                                           message:@"Standard Location Service"
                                          delegate:self
@@ -202,5 +253,14 @@ NSDictionary *destination;
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:@"Cancel", nil];
     [alertOakBrook show];
+}
+
+- (IBAction)set:(id)sender {
+    setAlert = [[UIAlertView alloc] initWithTitle:@"ALL SET"
+                                              message:@""
+                                             delegate:self
+                                    cancelButtonTitle:@"OK"
+                                    otherButtonTitles:@"Cancel", nil];
+    [setAlert show];
 }
 @end

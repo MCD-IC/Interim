@@ -10,11 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 @interface ViewController : UIViewController{
-    CLLocationManager *manager;
-    CLGeocoder *geocoder;
-    CLPlacemark *placemark;
-    CLLocation *romeoville;
-    CLLocationDistance distance;
+
 }
 
 @end

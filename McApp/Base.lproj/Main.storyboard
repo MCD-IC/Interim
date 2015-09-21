@@ -187,52 +187,45 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Current Option:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N8V-8R-hYh">
-                                <rect key="frame" x="23" y="383" width="113" height="21"/>
+                                <rect key="frame" x="23" y="344" width="113" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UxA-9J-WjC">
-                                <rect key="frame" x="18" y="313" width="220" height="30"/>
+                                <rect key="frame" x="18" y="293" width="220" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UVk-gg-S7l">
-                                <rect key="frame" x="23" y="412" width="61" height="30"/>
+                                <rect key="frame" x="23" y="373" width="61" height="30"/>
                                 <state key="normal" title="Option A"/>
                                 <connections>
                                     <action selector="optionA:" destination="zHQ-If-g9m" eventType="touchUpInside" id="Nhb-K0-HLi"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fbf-S6-4Wy">
-                                <rect key="frame" x="15" y="450" width="77" height="30"/>
-                                <state key="normal" title="Option B"/>
-                                <connections>
-                                    <action selector="optionB:" destination="zHQ-If-g9m" eventType="touchUpInside" id="ItT-dt-ynF"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7BR-NF-Zhk">
-                                <rect key="frame" x="18" y="488" width="71" height="30"/>
+                                <rect key="frame" x="20" y="460" width="71" height="30"/>
                                 <state key="normal" title="Option C"/>
                                 <connections>
                                     <action selector="optionC:" destination="zHQ-If-g9m" eventType="touchUpInside" id="vdh-wC-0Cb"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oAA-SD-DJ5">
-                                <rect key="frame" x="131" y="375" width="46" height="31"/>
+                                <rect key="frame" x="131" y="336" width="46" height="31"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pzv-1z-4kK">
-                                <rect key="frame" x="19" y="526" width="68" height="30"/>
+                                <rect key="frame" x="21" y="504" width="68" height="30"/>
                                 <state key="normal" title="Option D"/>
                                 <connections>
                                     <action selector="optionD:" destination="zHQ-If-g9m" eventType="touchUpInside" id="9tr-4k-oLS"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Proximity" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="chl-t4-41B">
-                                <rect key="frame" x="18" y="284" width="162" height="21"/>
+                                <rect key="frame" x="18" y="264" width="162" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -274,6 +267,21 @@
                                 </state>
                                 <connections>
                                     <action selector="toRomeoville:" destination="zHQ-If-g9m" eventType="touchUpInside" id="YBb-m0-MLc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SgV-Xl-LbP">
+                                <rect key="frame" x="100" y="555" width="56" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="SET"/>
+                                <connections>
+                                    <action selector="set:" destination="zHQ-If-g9m" eventType="touchUpInside" id="thF-8M-1Ir"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fbf-S6-4Wy">
+                                <rect key="frame" x="15" y="416" width="77" height="30"/>
+                                <state key="normal" title="Option B"/>
+                                <connections>
+                                    <action selector="optionB:" destination="zHQ-If-g9m" eventType="touchUpInside" id="ItT-dt-ynF"/>
                                 </connections>
                             </button>
                         </subviews>

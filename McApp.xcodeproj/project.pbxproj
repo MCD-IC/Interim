@@ -17,6 +17,7 @@
 		190C45791B55488E0038028B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C45781B55488E0038028B /* UIKit.framework */; };
 		190C457B1B5548A30038028B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C457A1B5548A30038028B /* MapKit.framework */; };
 		190C457D1B5548AC0038028B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C457C1B5548AC0038028B /* Foundation.framework */; };
+		1972DB0B1BB1E45900C45A3E /* ResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1972DB0A1BB1E45900C45A3E /* ResultsController.m */; settings = {ASSET_TAGS = (); }; };
 		19E206731BA765CE00615C2D /* SettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E206721BA765CE00615C2D /* SettingsController.m */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +35,8 @@
 		190C45781B55488E0038028B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		190C457A1B5548A30038028B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		190C457C1B5548AC0038028B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1972DB091BB1E45900C45A3E /* ResultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultsController.h; sourceTree = "<group>"; };
+		1972DB0A1BB1E45900C45A3E /* ResultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultsController.m; sourceTree = "<group>"; };
 		19E206711BA765CE00615C2D /* SettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsController.h; sourceTree = "<group>"; };
 		19E206721BA765CE00615C2D /* SettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -86,6 +89,8 @@
 				190C456B1B5547370038028B /* Assets.xcassets */,
 				190C456D1B5547370038028B /* LaunchScreen.storyboard */,
 				190C455F1B5547370038028B /* Supporting Files */,
+				1972DB091BB1E45900C45A3E /* ResultsController.h */,
+				1972DB0A1BB1E45900C45A3E /* ResultsController.m */,
 			);
 			path = McApp;
 			sourceTree = "<group>";
@@ -169,6 +174,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1972DB0B1BB1E45900C45A3E /* ResultsController.m in Sources */,
 				19E206731BA765CE00615C2D /* SettingsController.m in Sources */,
 				190C45671B5547370038028B /* ViewController.m in Sources */,
 				190C45641B5547370038028B /* AppDelegate.m in Sources */,

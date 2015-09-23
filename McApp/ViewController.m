@@ -20,6 +20,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *battery;
 
 @property (strong, nonatomic) IBOutlet UILabel *destinationLocation;
+@property (strong, nonatomic) IBOutlet UILabel *pingAndConfirm;
 
 - (IBAction)startStop:(id)sender;
 - (IBAction)confirmGeo:(id)sender;
@@ -143,8 +144,9 @@
     if(alertView == geo){
         if (buttonIndex == 0) {
             manualTimeStamp = [self dateAndTime];
-            [self performSegueWithIdentifier: @"toResults" sender: self];
-            [self stopData];
+            self.pingAndConfirm.text = [self dateAndTime];
+            //[self performSegueWithIdentifier: @"toResults" sender: self];
+            //[self stopData];
 
         }
     }
@@ -561,7 +563,7 @@
                 geofences = [self buildGeofenceData];
                 [self initializeRegionMonitoring:geofences];
                 [manager stopUpdatingLocation];
-                //[self initializeMap];
+                self.pingAndConfirm.text = @"GPS ping is done";
             }
         }
     }
@@ -582,7 +584,7 @@
                 geofences = [self buildGeofenceData];
                 [self initializeRegionMonitoring:geofences];
                 [manager stopUpdatingLocation];
-                //[self initializeMap];
+                self.pingAndConfirm.text = @"GPS ping is done";
             }
         }
     }

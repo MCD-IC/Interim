@@ -24,7 +24,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qlw-xn-vCL">
-                                <rect key="frame" x="183" y="182" width="175" height="21"/>
+                                <rect key="frame" x="183" y="182" width="215" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -36,7 +36,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LUZ-UC-Db0">
-                                <rect key="frame" x="183" y="221" width="150" height="21"/>
+                                <rect key="frame" x="183" y="221" width="215" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -201,6 +201,12 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jEC-LA-HRS">
+                                <rect key="frame" x="28" y="571" width="315" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -223,6 +229,7 @@
                         <outlet property="longitude" destination="8HF-M4-mRh" id="6u4-MP-OXY"/>
                         <outlet property="map" destination="L1c-ps-MeQ" id="aaQ-hb-AWd"/>
                         <outlet property="option" destination="jEB-YW-reW" id="IQP-DV-6Gz"/>
+                        <outlet property="pingAndConfirm" destination="jEC-LA-HRS" id="uxb-Rv-wsZ"/>
                         <outlet property="speed" destination="vnw-c1-LVr" id="E4e-Mb-Po0"/>
                         <outlet property="startStop" destination="fC5-c0-fKP" id="s9C-lN-fIH"/>
                         <segue destination="snp-hR-bZA" kind="show" identifier="toResults" id="dJt-T9-dbc"/>

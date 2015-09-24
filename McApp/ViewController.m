@@ -160,7 +160,6 @@
     }
     
     if(alertView == GPSPing){
-        
         //if false
         if (buttonIndex == 1) {
             geofences = [self buildGeofenceData];
@@ -245,7 +244,7 @@
 
 -(void) resetCoordinates:(NSDictionary *)data{
     currentDestination = data;
-    [self.map removeAnnotations: self.map.annotations];
+    //[self.map removeAnnotations: self.map.annotations];
     
     destinationPlot = [[CLLocation alloc] initWithLatitude:[data[@"latitude"] doubleValue] longitude:[data[@"longitude"] doubleValue]];
     destinationCoordinate.latitude = [data[@"latitude"] doubleValue];
@@ -288,7 +287,7 @@
     [manager stopUpdatingLocation];
     [manager stopMonitoringForRegion:geofences];
     self.startStop.selectedSegmentIndex = 1;
-    [self.map removeOverlay:circle];
+    //[self.map removeOverlay:circle];
     pingCount = 0;
 }
 
@@ -340,6 +339,7 @@
     [circleView setStrokeColor:[UIColor blackColor]];
     return circleView;
 }
+
 
 - (NSArray*) buildGeofenceData {
  
@@ -465,9 +465,9 @@
     //NSLog(@"Entered Region - %@", region.identifier);
     //NSLog(@"%f",[self timeStamp]);
     //NSLog([self dateAndTime]);
+    
     [hello show];
     autoTimeStamp = [self dateAndTime];
-    
     
     if([currentOption isEqualToString:@"B"]){
         //NSLog(@"Pinging, option b");
@@ -594,7 +594,7 @@
         
         if(distance <= [currentDestination[@"radius"] doubleValue]){
             if(!entered){
-                [customGeofence show];
+                [hello show];
                 entered = true;
             }
         }

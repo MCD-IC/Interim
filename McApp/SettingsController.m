@@ -210,7 +210,7 @@ NSString *setTitle;
 - (IBAction)optionC:(id)sender {
     [self.view endEditing:YES];
     alertC = [[UIAlertView alloc] initWithTitle:@"Option C"
-                                          message:@"Initial GPS Location + Significant Change Location Service"
+                                          message:@"Significant Change Location Service"
                                          delegate:self
                                 cancelButtonTitle:@"OK"
                                 otherButtonTitles:@"Cancel", nil];

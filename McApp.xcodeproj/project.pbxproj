@@ -18,6 +18,8 @@
 		190C457B1B5548A30038028B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C457A1B5548A30038028B /* MapKit.framework */; };
 		190C457D1B5548AC0038028B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C457C1B5548AC0038028B /* Foundation.framework */; };
 		1972DB0B1BB1E45900C45A3E /* ResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1972DB0A1BB1E45900C45A3E /* ResultsController.m */; settings = {ASSET_TAGS = (); }; };
+		19DBE2141BB46AA400732CD8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19DBE2131BB46AA400732CD8 /* AudioToolbox.framework */; };
+		19DBE2161BB4706600732CD8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19DBE2151BB4706600732CD8 /* AVFoundation.framework */; };
 		19E206731BA765CE00615C2D /* SettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E206721BA765CE00615C2D /* SettingsController.m */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +39,8 @@
 		190C457C1B5548AC0038028B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1972DB091BB1E45900C45A3E /* ResultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultsController.h; sourceTree = "<group>"; };
 		1972DB0A1BB1E45900C45A3E /* ResultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultsController.m; sourceTree = "<group>"; };
+		19DBE2131BB46AA400732CD8 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		19DBE2151BB4706600732CD8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		19E206711BA765CE00615C2D /* SettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsController.h; sourceTree = "<group>"; };
 		19E206721BA765CE00615C2D /* SettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -46,6 +50,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19DBE2161BB4706600732CD8 /* AVFoundation.framework in Frameworks */,
+				19DBE2141BB46AA400732CD8 /* AudioToolbox.framework in Frameworks */,
 				190C457D1B5548AC0038028B /* Foundation.framework in Frameworks */,
 				190C457B1B5548A30038028B /* MapKit.framework in Frameworks */,
 				190C45791B55488E0038028B /* UIKit.framework in Frameworks */,
@@ -59,6 +65,8 @@
 		190C45531B5547370038028B = {
 			isa = PBXGroup;
 			children = (
+				19DBE2151BB4706600732CD8 /* AVFoundation.framework */,
+				19DBE2131BB46AA400732CD8 /* AudioToolbox.framework */,
 				190C457C1B5548AC0038028B /* Foundation.framework */,
 				190C457A1B5548A30038028B /* MapKit.framework */,
 				190C45781B55488E0038028B /* UIKit.framework */,
@@ -290,7 +298,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = McApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = McDonalds.McApp;
 				PRODUCT_NAME = McApp;
@@ -303,7 +311,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = McApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = McDonalds.McApp;
 				PRODUCT_NAME = McApp;

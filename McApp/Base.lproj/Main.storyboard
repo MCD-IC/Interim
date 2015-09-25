@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="bDl-dZ-rwg">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <scenes>
@@ -227,7 +226,6 @@
                         <outlet property="destinationLocation" destination="dtr-q5-r5J" id="Xvk-IN-8L6"/>
                         <outlet property="latitude" destination="JJ7-U2-6Fd" id="7LM-Rw-bpN"/>
                         <outlet property="longitude" destination="8HF-M4-mRh" id="6u4-MP-OXY"/>
-                        <outlet property="map" destination="RAK-jH-WQf" id="byl-hQ-pXC"/>
                         <outlet property="option" destination="jEB-YW-reW" id="IQP-DV-6Gz"/>
                         <outlet property="pingAndConfirm" destination="jEC-LA-HRS" id="uxb-Rv-wsZ"/>
                         <outlet property="speed" destination="vnw-c1-LVr" id="E4e-Mb-Po0"/>

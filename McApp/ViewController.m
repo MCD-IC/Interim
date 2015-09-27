@@ -275,6 +275,9 @@
             else if([currentOption isEqualToString:@"D"]) {
                 [self runOptionD];
             }
+            else if([currentOption isEqualToString:@"E"]) {
+                [self runOptionE];
+            }
             entered = false;
             self.confirmGeofence.enabled = true;
         }
@@ -346,6 +349,14 @@
     NSMutableArray *geofences = [NSMutableArray array];
     CLRegion *region = [self mapDictionaryToRegion:currentDestination];
     [geofences addObject:region];
+    
+    if([currentOption isEqualToString:@"E"]){
+        NSDictionary *course = @{@"latitude":currentDestination[@"latitude"], @"longitude":currentDestination[@"longitude"], @"radius":@"800", @"title":currentDestination[@"title"]};
+        CLRegion *courseRegion = [self mapDictionaryToRegion:course];
+        NSLog(@"%@", courseRegion);
+        [geofences addObject:courseRegion];
+    }
+    
     return [NSArray arrayWithArray:geofences];
 }
 
@@ -456,6 +467,21 @@
     //NSLog(@"D");
 }
 
+-(void)runOptionE{
+    manager.delegate = self;
+    manager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    [manager requestAlwaysAuthorization];
+    [manager requestWhenInUseAuthorization];
+    [manager startUpdatingLocation];
+    
+    pingCount = 0;
+    
+    self.startStop.selectedSegmentIndex = 0;
+    [self initializeMap];
+    //NSLog(@"E");
+}
+
 //end/////////////////////////////////////////////////////////
 
 //Geofenceing region monitoring/////////////////////////////////////////////////////////
@@ -474,6 +500,13 @@
         [manager startUpdatingLocation];
         pingCount = 0;
 
+    }
+    
+    if([currentOption isEqualToString:@"E"]){
+        //NSLog(@"Pinging, option b");
+        [manager startUpdatingLocation];
+        pingCount = 0;
+        
     }
 }
 
@@ -596,6 +629,26 @@
             if(!entered){
                 [hello show];
                 entered = true;
+            }
+        }
+    }
+    
+    if([currentOption isEqualToString:@"E"]){
+        //NSLog(@"Pinging, option b");
+        
+        if(distance <= [currentDestination[@"radius"] doubleValue]){
+            if(!entered){
+                [GPSPing show];
+                autoTimeStamp = [self dateAndTime];
+                entered = true;
+            }
+        }else {
+            //NSLog(@"ping count %d",pingCount);
+            if(pingCount == 6){
+                geofences = [self buildGeofenceData];
+                [self initializeRegionMonitoring:geofences];
+                [manager stopUpdatingLocation];
+                self.pingAndConfirm.text = @"GPS ping is done";
             }
         }
     }

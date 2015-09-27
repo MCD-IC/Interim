@@ -14,15 +14,20 @@
 - (IBAction)optionB:(id)sender;
 - (IBAction)optionC:(id)sender;
 - (IBAction)optionD:(id)sender;
+- (IBAction)optionE:(id)sender;
 
 - (IBAction)toRomeoville:(id)sender;
 - (IBAction)toChicago:(id)sender;
 - (IBAction)toOakBrook:(id)sender;
 - (IBAction)set:(id)sender;
 
-
 @property (strong, nonatomic) IBOutlet UITextField *proximity;
 @property (strong, nonatomic) IBOutlet UILabel *beingMonitored;
+
+@property (strong, nonatomic) IBOutlet UITextField *customTitle;
+@property (strong, nonatomic) IBOutlet UITextField *customLatitude;
+@property (strong, nonatomic) IBOutlet UITextField *customLongitude;
+- (IBAction)enterCustomLocation:(id)sender;
 
 @end
 
@@ -32,10 +37,12 @@ UIAlertView *alertA;
 UIAlertView *alertB;
 UIAlertView *alertC;
 UIAlertView *alertD;
+UIAlertView *alertE;
     
 UIAlertView *alertRomeoville;
 UIAlertView *alertChicago;
 UIAlertView *alertOakBrook;
+UIAlertView *alertCustom;
     
 UIAlertView *setAlert;
     
@@ -63,6 +70,16 @@ NSString *setTitle;
     setLatitude = self.currentDestination[@"latitude"];
     setLongitude = self.currentDestination[@"longitude"];
     setTitle = self.currentDestination[@"title"];
+    
+    if(![setTitle isEqualToString:@"Chicago"]  ){
+        if(![setTitle isEqualToString:@"Oak Brook"]  ){
+            if(![setTitle isEqualToString:@"Romeoville"]  ){
+                self.customTitle.text = setTitle;
+                self.customLatitude.text = setLatitude;
+                self.customLongitude.text = setLongitude;
+            }
+        }
+    }
     
     NSLog(self.currentDestination[@"radius"]);
 }
@@ -121,6 +138,15 @@ NSString *setTitle;
             choosenOption.text = @"D";
         }
     }
+    
+    if(alertView == alertE){
+        if (buttonIndex == 1) {
+            NSLog(@"Cancel");
+        }else{
+            NSLog(@"OK");
+            choosenOption.text = @"E";
+        }
+    }
  
     if(alertView == setAlert){
         if (buttonIndex == 1) {
@@ -157,6 +183,7 @@ NSString *setTitle;
             setLatitude = @"41.6721034";
             setLongitude = @"-88.0681658";
             setTitle = @"Romeoville";
+            [self clearCustom];
         }
     }
     
@@ -170,6 +197,7 @@ NSString *setTitle;
             setLatitude = @"41.8860837";
             setLongitude = @"-87.6321842";
             setTitle = @"Chicago";
+            [self clearCustom];
         }
     }
     
@@ -183,6 +211,20 @@ NSString *setTitle;
             setLatitude = @"41.8477231";
             setLongitude = @"-87.9476483";
             setTitle = @"Oak Brook";
+            [self clearCustom];
+        }
+    }
+    
+    if(alertView == alertCustom){
+        if (buttonIndex == 1) {
+            NSLog(@"Cancel");
+        }else{
+            NSLog(@"OK");
+            self.beingMonitored.text = self.customTitle.text;
+            
+            setLatitude = self.customLatitude.text;
+            setLongitude = self.customLongitude.text;
+            setTitle = self.customTitle.text;
         }
     }
 }
@@ -227,6 +269,17 @@ NSString *setTitle;
     [alertD show];
 }
 
+- (IBAction)optionE:(id)sender {
+    [self.view endEditing:YES];
+    alertE = [[UIAlertView alloc] initWithTitle:@"Option E"
+                                        message:@"Course Boundary @ 800 meters + GPS"
+                                       delegate:self
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:@"Cancel", nil];
+    [alertE show];
+
+}
+
 - (IBAction)toRomeoville:(id)sender {
     
     alertRomeoville = [[UIAlertView alloc] initWithTitle:@"Romeoville"
@@ -262,5 +315,19 @@ NSString *setTitle;
                                     cancelButtonTitle:@"OK"
                                     otherButtonTitles:@"Cancel", nil];
     [setAlert show];
+}
+- (IBAction)enterCustomLocation:(id)sender {
+    alertCustom = [[UIAlertView alloc] initWithTitle:self.customTitle.text
+                                               message:@""
+                                              delegate:self
+                                     cancelButtonTitle:@"OK"
+                                     otherButtonTitles:@"Cancel", nil];
+    [alertCustom show];
+}
+
+-(void) clearCustom{
+    self.customTitle.text = @"";
+    self.customLatitude.text = @"";
+    self.customLongitude.text = @"";
 }
 @end

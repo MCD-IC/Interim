@@ -14,7 +14,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *delta;
 @property (strong, nonatomic) IBOutlet UILabel *option;
 
-@property (strong, nonatomic) IBOutlet MKMapView *map;
+//@property (strong, nonatomic) IBOutlet MKMapView *map;
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *startStop;
 @property (strong, nonatomic) IBOutlet UILabel *battery;
@@ -24,6 +24,7 @@
 
 - (IBAction)startStop:(id)sender;
 - (IBAction)confirmGeo:(id)sender;
+- (IBAction)gotoResults:(id)sender;
 
 
 @property (strong, nonatomic) IBOutlet UIButton *confirmGeofence;
@@ -165,7 +166,7 @@
             geofences = [self buildGeofenceData];
             [self initializeRegionMonitoring:geofences];
             [manager stopUpdatingLocation];
-            [self initializeMap];
+            //[self initializeMap];
         }else{
             manualTimeStamp = [self dateAndTime];
             [self performSegueWithIdentifier: @"toResults" sender: self];
@@ -316,10 +317,14 @@
     [geo show];
 }
 
+- (IBAction)gotoResults:(id)sender {
+    [self performSegueWithIdentifier: @"toResults" sender: self];
+}
+
 //end////////////////////////////////////////////////////////
 
 //Map and region monitor setting/////////////////////////////////////////////////////////
-- (void)initializeMap {
+/*- (void)initializeMap {
     self.map.centerCoordinate = destinationCoordinate;
     [self.map setRegion:MKCoordinateRegionMakeWithDistance(destinationCoordinate, 800, 800) animated:YES];
     [self.map setUserTrackingMode:MKUserTrackingModeFollow animated:YES];
@@ -341,7 +346,7 @@
     MKCircleView *circleView = [[MKCircleView alloc] initWithOverlay:overlay];
     [circleView setStrokeColor:[UIColor blackColor]];
     return circleView;
-}
+}*/
 
 
 - (NSArray*) buildGeofenceData {
@@ -414,7 +419,7 @@
     pingCount = 0;
     
     self.startStop.selectedSegmentIndex = 0;
-    [self initializeMap];
+    //[self initializeMap];
     //NSLog(@"A");
 }
 
@@ -429,7 +434,7 @@
     pingCount = 0;
     
     self.startStop.selectedSegmentIndex = 0;
-    [self initializeMap];
+    //[self initializeMap];
     //NSLog(@"B");
 }
 
@@ -444,7 +449,7 @@
     [manager requestWhenInUseAuthorization];
     [manager startMonitoringSignificantLocationChanges];
     
-    [self initializeMap];
+    //[self initializeMap];
     self.startStop.selectedSegmentIndex = 0;
     
     //NSLog(@"C");
@@ -461,7 +466,7 @@
     [manager requestWhenInUseAuthorization];
     [manager startUpdatingLocation];
     
-    [self initializeMap];
+    //[self initializeMap];
     self.startStop.selectedSegmentIndex = 0;
     
     //NSLog(@"D");
@@ -478,7 +483,7 @@
     pingCount = 0;
     
     self.startStop.selectedSegmentIndex = 0;
-    [self initializeMap];
+    //[self initializeMap];
     //NSLog(@"E");
 }
 

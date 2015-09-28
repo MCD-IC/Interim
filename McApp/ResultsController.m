@@ -36,11 +36,6 @@ UIAlertView  *sendAlert;
     self.manualTimeStampLabel.text  = self.manualTimeStamp;
     self.batteryUsage.text  = self.batteryLevel;
     self.optionLevel.text  = self.option;
-    
-    /*self.autoTimeStampLabel.text = @"12-35-65";
-    self.manualTimeStampLabel.text  = @"12-34-56";
-    self.batteryUsage.text  = @"100%";
-    self.optionLevel.text  = @"D";*/
 
     NSLog(self.option);
     
@@ -69,7 +64,7 @@ UIAlertView  *sendAlert;
 }
 
 -(void)beforeSendAlert{
-    sendAlert = [[UIAlertView alloc] initWithTitle:@"Complete the Session"
+    sendAlert = [[UIAlertView alloc] initWithTitle:@"Please complete the Session."
                                         message:@""
                                        delegate:self
                               cancelButtonTitle:@"OK"
@@ -92,8 +87,20 @@ UIAlertView  *sendAlert;
     [usersRef updateChildValues: sessionData withCompletionBlock:^(NSError *error, Firebase *ref) {
         if (error) {
             NSLog(@"Data could not be saved.");
+            UIAlertView *alertA = [[UIAlertView alloc] initWithTitle:@"Not Sent"
+                                                             message:@"Please try again"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles: nil];
+            [alertA show];
         } else {
             NSLog(@"Data saved successfully.");
+            UIAlertView *alertB = [[UIAlertView alloc] initWithTitle:@"Sent"
+                                                message:@"Your data was saved to the cloud"
+                                               delegate:self
+                                      cancelButtonTitle:@"OK"
+                                      otherButtonTitles: nil];
+            [alertB show];
         }
     }];
     
@@ -105,8 +112,6 @@ UIAlertView  *sendAlert;
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     [self.view endEditing:YES];
-    //return
-    //NSLog(@"%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberName"]);
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {

@@ -82,6 +82,12 @@ NSString *setTitle;
     }
     
     NSLog(self.currentDestination[@"radius"]);
+    
+    self.customTitle.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"customLocation"][@"title"];
+    self.customLatitude.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"customLocation"][@"latitude"];
+    self.customLongitude.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"customLocation"][@"longitude"];
+    
+     //NSLog(@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"customLocation"]);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -225,6 +231,9 @@ NSString *setTitle;
             setLatitude = self.customLatitude.text;
             setLongitude = self.customLongitude.text;
             setTitle = self.customTitle.text;
+            
+            [[NSUserDefaults standardUserDefaults] setObject:@{@"title":self.customTitle.text,@"latitude":self.customLatitude.text,@"longitude":self.customLongitude.text} forKey:@"customLocation"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
 }

@@ -15,6 +15,7 @@
 - (IBAction)optionC:(id)sender;
 - (IBAction)optionD:(id)sender;
 - (IBAction)optionE:(id)sender;
+- (IBAction)optionF:(id)sender;
 
 - (IBAction)toRomeoville:(id)sender;
 - (IBAction)toChicago:(id)sender;
@@ -38,6 +39,7 @@ UIAlertView *alertB;
 UIAlertView *alertC;
 UIAlertView *alertD;
 UIAlertView *alertE;
+UIAlertView *alertF;
     
 UIAlertView *alertRomeoville;
 UIAlertView *alertChicago;
@@ -153,6 +155,15 @@ NSString *setTitle;
             choosenOption.text = @"E";
         }
     }
+    
+    if(alertView == alertF){
+        if (buttonIndex == 1) {
+            NSLog(@"Cancel");
+        }else{
+            NSLog(@"OK");
+            choosenOption.text = @"F";
+        }
+    }
  
     if(alertView == setAlert){
         if (buttonIndex == 1) {
@@ -261,7 +272,7 @@ NSString *setTitle;
 - (IBAction)optionC:(id)sender {
     [self.view endEditing:YES];
     alertC = [[UIAlertView alloc] initWithTitle:@"Option C"
-                                          message:@"Significant Change Location Service"
+                                          message:@"Course Boundary @ 800 meters + GPS"
                                          delegate:self
                                 cancelButtonTitle:@"OK"
                                 otherButtonTitles:@"Cancel", nil];
@@ -271,7 +282,7 @@ NSString *setTitle;
 - (IBAction)optionD:(id)sender {
     [self.view endEditing:YES];
     alertD = [[UIAlertView alloc] initWithTitle:@"Option D"
-                                          message:@"Standard Location Service"
+                                          message:@"Standard Location Service - Best"
                                          delegate:self
                                 cancelButtonTitle:@"OK"
                                 otherButtonTitles:@"Cancel", nil];
@@ -281,12 +292,22 @@ NSString *setTitle;
 - (IBAction)optionE:(id)sender {
     [self.view endEditing:YES];
     alertE = [[UIAlertView alloc] initWithTitle:@"Option E"
-                                        message:@"Course Boundary @ 800 meters + GPS"
+                                        message:@"Standard Location Service - Nearest Ten Meters"
                                        delegate:self
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:@"Cancel", nil];
     [alertE show];
 
+}
+
+- (IBAction)optionF:(id)sender {
+    [self.view endEditing:YES];
+    alertF = [[UIAlertView alloc] initWithTitle:@"Option F"
+                                        message:@"Standard Location Service - Nearest Hundred Meters"
+                                       delegate:self
+                              cancelButtonTitle:@"OK"
+                              otherButtonTitles:@"Cancel", nil];
+    [alertF show];
 }
 
 - (IBAction)toRomeoville:(id)sender {
@@ -318,7 +339,7 @@ NSString *setTitle;
 }
 
 - (IBAction)set:(id)sender {
-    setAlert = [[UIAlertView alloc] initWithTitle:@"ALL SET"
+    setAlert = [[UIAlertView alloc] initWithTitle:@"ALL SET?"
                                               message:@""
                                              delegate:self
                                     cancelButtonTitle:@"OK"

@@ -44,6 +44,7 @@
 
 
     UIAlertView *hello;
+    UIAlertView *helloC;
     UIAlertView *goodbye;
     UIAlertView *customGeofence;
     UIAlertView *gotoSettings;
@@ -111,6 +112,12 @@
                                              cancelButtonTitle:@"Yes"
                                              otherButtonTitles:@"No", nil];
     
+    helloC = [[UIAlertView alloc] initWithTitle:@"Auto Boundary Crossing Alert - Arrival"
+                                       message:@"Are you at McDonald's"
+                                      delegate:self
+                             cancelButtonTitle:@"Yes"
+                             otherButtonTitles:@"No", nil];
+    
     goodbye = [[UIAlertView alloc] initWithTitle:@"Auto Boundary Crossing Alert - Leaving"
                                                        message:@"Have the best day."
                                                       delegate:self
@@ -157,6 +164,12 @@
             manualTimeStamp = [self dateAndTime];
             [self performSegueWithIdentifier: @"toResults" sender: self];
             [self stopData];
+        }
+    }
+    
+    if(alertView == helloC){
+        if (buttonIndex == 0) {
+            manualTimeStamp = [self dateAndTime];
         }
     }
     
@@ -279,6 +292,9 @@
             else if([currentOption isEqualToString:@"E"]) {
                 [self runOptionE];
             }
+            else if([currentOption isEqualToString:@"F"]) {
+                [self runOptionF];
+            }
             entered = false;
             self.confirmGeofence.enabled = true;
         }
@@ -355,7 +371,7 @@
     CLRegion *region = [self mapDictionaryToRegion:currentDestination];
     [geofences addObject:region];
     
-    if([currentOption isEqualToString:@"E"]){
+    if([currentOption isEqualToString:@"C"]){
         NSDictionary *course = @{@"latitude":currentDestination[@"latitude"], @"longitude":currentDestination[@"longitude"], @"radius":@"800", @"title":currentDestination[@"title"]};
         CLRegion *courseRegion = [self mapDictionaryToRegion:course];
         NSLog(@"%@", courseRegion);
@@ -438,7 +454,8 @@
     //NSLog(@"B");
 }
 
--(void)runOptionC{
+//OLD C - sigificant change not being used
+/*-(void)runOptionC{
     geofences = [self buildGeofenceData];
     [self initializeRegionMonitoring:geofences];
     
@@ -453,7 +470,8 @@
     self.startStop.selectedSegmentIndex = 0;
     
     //NSLog(@"C");
-}
+}*/
+//////////////////////////////////////////////////////
 
 -(void)runOptionD{
     //geofences = [self buildGeofenceData];
@@ -472,7 +490,7 @@
     //NSLog(@"D");
 }
 
--(void)runOptionE{
+-(void)runOptionC{
     manager.delegate = self;
     manager.desiredAccuracy = kCLLocationAccuracyBest;
     
@@ -487,6 +505,41 @@
     //NSLog(@"E");
 }
 
+-(void)runOptionE{
+    //geofences = [self buildGeofenceData];
+    //[self initializeRegionMonitoring:geofences];
+    
+    manager.delegate = self;
+    manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+    
+    [manager requestAlwaysAuthorization];
+    [manager requestWhenInUseAuthorization];
+    [manager startUpdatingLocation];
+    
+    //[self initializeMap];
+    self.startStop.selectedSegmentIndex = 0;
+    
+    //NSLog(@"D");
+}
+
+
+-(void)runOptionF{
+    //geofences = [self buildGeofenceData];
+    //[self initializeRegionMonitoring:geofences];
+    
+    manager.delegate = self;
+    manager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    
+    [manager requestAlwaysAuthorization];
+    [manager requestWhenInUseAuthorization];
+    [manager startUpdatingLocation];
+    
+    //[self initializeMap];
+    self.startStop.selectedSegmentIndex = 0;
+    
+    //NSLog(@"D");
+}
+
 //end/////////////////////////////////////////////////////////
 
 //Geofenceing region monitoring/////////////////////////////////////////////////////////
@@ -497,8 +550,11 @@
     //NSLog(@"%f",[self timeStamp]);
     //NSLog([self dateAndTime]);
     
-    [hello show];
-    autoTimeStamp = [self dateAndTime];
+    if([currentOption isEqualToString:@"A"]){
+        [hello show];
+        autoTimeStamp = [self dateAndTime];
+    }
+
     
     if([currentOption isEqualToString:@"B"]){
         //NSLog(@"Pinging, option b");
@@ -507,8 +563,8 @@
 
     }
     
-    if([currentOption isEqualToString:@"E"]){
-        //NSLog(@"Pinging, option b");
+    if([currentOption isEqualToString:@"C"]){
+        [helloC show];
         [manager startUpdatingLocation];
         pingCount = 0;
         
@@ -639,6 +695,17 @@
     }
     
     if([currentOption isEqualToString:@"E"]){
+        //NSLog(@"Pinging, option d");
+        
+        if(distance <= [currentDestination[@"radius"] doubleValue]){
+            if(!entered){
+                [hello show];
+                entered = true;
+            }
+        }
+    }
+    
+    if([currentOption isEqualToString:@"C"]){
         //NSLog(@"Pinging, option b");
         
         if(distance <= [currentDestination[@"radius"] doubleValue]){
@@ -654,6 +721,17 @@
                 [self initializeRegionMonitoring:geofences];
                 [manager stopUpdatingLocation];
                 self.pingAndConfirm.text = @"GPS ping is done";
+            }
+        }
+    }
+    
+    if([currentOption isEqualToString:@"F"]){
+        //NSLog(@"Pinging, option d");
+        
+        if(distance <= [currentDestination[@"radius"] doubleValue]){
+            if(!entered){
+                [hello show];
+                entered = true;
             }
         }
     }

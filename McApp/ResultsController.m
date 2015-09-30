@@ -15,11 +15,12 @@
 @property (strong, nonatomic) IBOutlet UILabel *manualTimeStampLabel;
 @property (strong, nonatomic) IBOutlet UILabel *batteryUsage;
 @property (strong, nonatomic) IBOutlet UILabel *optionLevel;
-
+@property (strong, nonatomic) IBOutlet UILabel *sendingLabel;
 - (IBAction)saveData:(id)sender;
 
 @property (strong, nonatomic) IBOutlet UITextField *nameTextField;
 @property (strong, nonatomic) IBOutlet UITextField *sessionTextField;
+
 
 @end
 
@@ -40,6 +41,7 @@ UIAlertView  *sendAlert;
     NSLog(self.option);
     
     self.nameTextField.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberName"];
+    self.sendingLabel.text = @"";
 }
 
 - (IBAction)saveData:(id)sender {
@@ -64,7 +66,7 @@ UIAlertView  *sendAlert;
 }
 
 -(void)beforeSendAlert{
-    sendAlert = [[UIAlertView alloc] initWithTitle:@"Please complete the Session."
+    sendAlert = [[UIAlertView alloc] initWithTitle:@"Please complete the session."
                                         message:@""
                                        delegate:self
                               cancelButtonTitle:@"OK"
@@ -85,6 +87,9 @@ UIAlertView  *sendAlert;
                                           }};
     
     [usersRef updateChildValues: sessionData withCompletionBlock:^(NSError *error, Firebase *ref) {
+        
+        self.sendingLabel.text = @"sending...";
+        
         if (error) {
             NSLog(@"Data could not be saved.");
             UIAlertView *alertA = [[UIAlertView alloc] initWithTitle:@"Not Sent"
@@ -101,6 +106,8 @@ UIAlertView  *sendAlert;
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles: nil];
             [alertB show];
+            
+            self.sendingLabel.text = @"sent";
         }
     }];
     

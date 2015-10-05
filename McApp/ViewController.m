@@ -20,7 +20,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *battery;
 
 @property (strong, nonatomic) IBOutlet UILabel *destinationLocation;
-@property (strong, nonatomic) IBOutlet UILabel *pingAndConfirm;
+@property (strong, nonatomic) IBOutlet UILabel *readOut;
 
 @property (strong, nonatomic) IBOutlet UIButton *confirmGeoUI;
 @property (strong, nonatomic) IBOutlet UIButton *endSession;
@@ -35,37 +35,44 @@
 @end
 
 @implementation ViewController{
+    
+    //CL Declarations
     CLLocationManager *manager;
     CLGeocoder *geocoder;
     CLPlacemark *placemark;
     CLLocation *destinationPlot;
     CLLocationDistance distance;
     
+    //Region Monitoring
     NSArray *_regionArray;
     NSArray *geofences;
+    
+    //Maps
     MKCircle *circle;
-
-    UIAlertView *hello;
-    UIAlertView *helloC;
-    UIAlertView *goodbye;
-    UIAlertView *customGeofence;
-    UIAlertView *gotoSettings;
-    UIAlertView *GPSPing;
-    UIAlertView *geo;
-    UIAlertView *end;
-    
-    NSDictionary *currentDestination;
-    NSString *proximity;
     MKPointAnnotation *annotation;
-    
     CLLocationCoordinate2D destinationCoordinate;
-    NSNumberFormatter *f;
-    NSString *currentOption;
+
+    //Alerts
+    UIAlertView *helloAlert;
+    UIAlertView *helloCAlert;
+    UIAlertView *goodbyeAlert;
+    UIAlertView *gotoSettingsAlert;
+    UIAlertView *gpsPingAlert;
+    UIAlertView *manualConfimationAlert;
+    UIAlertView *endingAlert;
     
+    //Data Points
+    NSDictionary *currentDestination;
+    NSString *fineRadius;
+    NSString *currentOption;
+
+    //Radii Data POints
     NSString *autoTimeStamp;
     NSString *manualTimeStamp;
     NSString *battery;
 
+    //Misc.
+    NSNumberFormatter *f;
     int pingCount;
     bool entered;
     bool inSession;
@@ -84,8 +91,6 @@
     [self alerts];
     
     [[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
-    [[UIDevice currentDevice] batteryLevel];
-    [[UIDevice currentDevice] batteryState];
     
     if([currentDestination count] < 1){
         self.confirmGeoUI.hidden = true;
@@ -107,51 +112,46 @@
 
 //Alerts /////////////////////////////////////////////////////////
 -(void) alerts{
-    gotoSettings = [[UIAlertView alloc] initWithTitle:@"Please Enter Your Settings"
+    gotoSettingsAlert = [[UIAlertView alloc] initWithTitle:@"Please Enter Your Settings"
                                        message:@"You are being sent to the settings screen."
                                       delegate:self
                              cancelButtonTitle:@"Okay"
                              otherButtonTitles:nil];
     
     
-    hello = [[UIAlertView alloc] initWithTitle:@"Auto Boundary Crossing Alert - Arrival"
+    helloAlert = [[UIAlertView alloc] initWithTitle:@"Auto Boundary Crossing Alert - Arrival"
                                                        message:@"Are you at McDonald's"
                                                       delegate:self
                                              cancelButtonTitle:@"Yes"
                                              otherButtonTitles:@"No", nil];
     
-    helloC = [[UIAlertView alloc] initWithTitle:@"Auto Boundary Crossing Alert - Arrival"
+    helloCAlert = [[UIAlertView alloc] initWithTitle:@"Auto Boundary Crossing Alert - Arrival"
                                        message:@"Are you at McDonald's"
                                       delegate:self
                              cancelButtonTitle:@"Yes"
                              otherButtonTitles:@"No", nil];
     
-    goodbye = [[UIAlertView alloc] initWithTitle:@"Auto Boundary Crossing Alert - Leaving"
+    goodbyeAlert = [[UIAlertView alloc] initWithTitle:@"Auto Boundary Crossing Alert - Leaving"
                                                        message:@"Have the best day."
                                                       delegate:self
                                              cancelButtonTitle:@"See ya"
                                              otherButtonTitles:nil];
+
     
-    customGeofence = [[UIAlertView alloc] initWithTitle:@"Custom Hello"
-                                         message:@"Custom Welcome"
-                                        delegate:self
-                               cancelButtonTitle:@"Custom Thank you"
-                               otherButtonTitles:nil];
-    
-    GPSPing = [[UIAlertView alloc] initWithTitle:@"At McDonald's"
+    gpsPingAlert = [[UIAlertView alloc] initWithTitle:@"At McDonald's"
                                          message:@"It looks like you are already at McDonald's"
                                         delegate:self
                                cancelButtonTitle:@"Yes"
                                otherButtonTitles:@"No", nil];
     
     
-    geo = [[UIAlertView alloc] initWithTitle:@"Are you at McDonald's?"
+    manualConfimationAlert = [[UIAlertView alloc] initWithTitle:@"Are you at McDonald's?"
                                                   message:@"This a manual geofence confirmation"
                                                  delegate:self
                                         cancelButtonTitle:@"Yes"
                                         otherButtonTitles:@"No", nil];
     
-    end = [[UIAlertView alloc] initWithTitle:@"You are In Session!"
+    endingAlert = [[UIAlertView alloc] initWithTitle:@"You are In Session!"
                                      message:@"Are you sure you want to end this session?"
                                     delegate:self
                            cancelButtonTitle:@"Yes"
@@ -159,20 +159,22 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(alertView == gotoSettings){
+    if(alertView == gotoSettingsAlert){
         [self performSegueWithIdentifier:@"toSettings" sender:self];
     }
     
-    if(alertView == geo){
+    if(alertView == manualConfimationAlert){
         if (buttonIndex == 0) {
-            manualTimeStamp = [self dateAndTime];
-            self.pingAndConfirm.text = [self dateAndTime];
-            //[self performSegueWithIdentifier: @"toResults" sender: self];
-            //[self stopData];
+            //if([currentOption isEqualToString:@"A"]){
+                manualTimeStamp = [self dateAndTime];
+                self.readOut.text = [self dateAndTime];
+                [self performSegueWithIdentifier: @"toResults" sender: self];
+                [self stopData];
+            //}
         }
     }
     
-    if(alertView == end){
+    if(alertView == endingAlert){
         if (buttonIndex == 0) {
             [self performSegueWithIdentifier: @"toResults" sender: self];
             [self stopData];
@@ -180,7 +182,7 @@
         }
     }
     
-    if(alertView == hello){
+    if(alertView == helloAlert){
         if (buttonIndex == 0) {
             manualTimeStamp = [self dateAndTime];
             [self performSegueWithIdentifier: @"toResults" sender: self];
@@ -188,13 +190,13 @@
         }
     }
     
-    if(alertView == helloC){
+    if(alertView == helloCAlert){
         if (buttonIndex == 0) {
             manualTimeStamp = [self dateAndTime];
         }
     }
     
-    if(alertView == GPSPing){
+    if(alertView == gpsPingAlert){
         //if false
         if (buttonIndex == 1) {
             geofences = [self buildGeofenceData];
@@ -212,41 +214,30 @@
 
 //end/////////////////////////////////////////////////////////
 
-//Capturing data /////////////////////////////////////////////////////////
+//Capturing segue data/////////////////////////////////////////////////////////
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     SettingsController *transferSettingsController = segue.destinationViewController;
     if ([[segue identifier] isEqualToString:@"toSettings"]){
         transferSettingsController.option = self.option.text;
-        transferSettingsController.currentProximity = proximity;
+        transferSettingsController.currentProximity = fineRadius;
         transferSettingsController.currentDestination = currentDestination;
         transferSettingsController.delegate = self;
     }
     
     ResultsController *transferResultsController = segue.destinationViewController;
     if ([[segue identifier] isEqualToString:@"toResults"]){
+       /* 
         transferResultsController.autoTimeStamp = autoTimeStamp;
         transferResultsController.manualTimeStamp = manualTimeStamp;
-        transferResultsController.batteryLevel = battery;
+        */
+        
+        //transferResultsController.radii = ;
+        //transferResultsController.sessionTime = ;
         transferResultsController.option = self.option.text;
+        transferResultsController.batteryUsed = battery;
         transferResultsController.delegate = self;
     }
 }
-
-- (NSTimeInterval) timeStamp {
-    return [[NSDate date] timeIntervalSince1970];
-}
-
--(NSString*) dateAndTime{
-    // get current date/time
-    NSString *date;
-    NSDate *now = [NSDate date];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd-HH-mm-ss"];
-    date = [dateFormatter stringFromDate:now];
-    
-    return date;
-}
-
 //end/////////////////////////////////////////////////////////
 
 //set destination parameters from settings/////////////////////////////////////////////////////////
@@ -279,12 +270,14 @@
 
 -(void) resetCoordinates:(NSDictionary *)data{
     currentDestination = data;
-    //[self.map removeAnnotations: self.map.annotations];
+    self.destinationLocation.text = data[@"title"];
     
+    //[self.map removeAnnotations: self.map.annotations];
     destinationPlot = [[CLLocation alloc] initWithLatitude:[data[@"latitude"] doubleValue] longitude:[data[@"longitude"] doubleValue]];
     destinationCoordinate.latitude = [data[@"latitude"] doubleValue];
     destinationCoordinate.longitude = [data[@"longitude"] doubleValue];
-    self.destinationLocation.text = data[@"title"];
+    
+
     //NSLog(@"Dictionary: %@", [data description]);
 }
 
@@ -294,7 +287,7 @@
 - (void)startData{
     @try{
         if ([self.option.text isEqualToString:@""]){
-            [gotoSettings show];
+            [gotoSettingsAlert show];
             self.startStop.selectedSegmentIndex = 1;
         }else{
             
@@ -317,14 +310,15 @@
                 [self runOptionF];
             }
             
-            entered = false;
             self.confirmGeoUI.hidden = false;
             self.endSession.hidden = false;
-            self.pingAndConfirm.text = @"If your are at the radius and there isn't an auto alert.";
+            self.readOut.text = @"If your are at the radius and there isn't an auto alert.";
+            
             inSession = true;
+            entered = false;
         }
     }@catch(NSException *exception){
-        [gotoSettings show];
+        [gotoSettingsAlert show];
     }
 }
 
@@ -353,12 +347,12 @@
 }
 
 - (IBAction)confirmGeo:(id)sender {
-    [geo show];
+    [manualConfimationAlert show];
 }
 
 - (IBAction)gotoResults:(id)sender {
     if(inSession){
-        [end show];
+        [endingAlert show];
     }
     //[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://45.55.238.244/int-data/"]];
 }
@@ -389,8 +383,9 @@
     [circleView setStrokeColor:[UIColor blackColor]];
     return circleView;
 }*/
+//end////////////////////////////////////////////////////////
 
-
+//Building geofences/////////////////////////////////////////////////////////
 - (NSArray*) buildGeofenceData {
  
     NSMutableArray *geofences = [NSMutableArray array];
@@ -426,7 +421,9 @@
         [manager startMonitoringForRegion:geofence];
     }
 }
+//end////////////////////////////////////////////////////////
 
+//Battery////////////////////////////////////////////////////////
 - (void)batteryStatus{
     NSArray *batteryStatus = [NSArray arrayWithObjects:
                               @"Battery status is unknown.",
@@ -499,6 +496,21 @@
 }*/
 //////////////////////////////////////////////////////
 
+-(void)runOptionC{
+    manager.delegate = self;
+    manager.desiredAccuracy = kCLLocationAccuracyBest;
+    
+    [manager requestAlwaysAuthorization];
+    [manager requestWhenInUseAuthorization];
+    [manager startUpdatingLocation];
+    
+    pingCount = 0;
+    
+    self.startStop.selectedSegmentIndex = 0;
+    //[self initializeMap];
+    //NSLog(@"E");
+}
+
 -(void)runOptionD{
     //geofences = [self buildGeofenceData];
     //[self initializeRegionMonitoring:geofences];
@@ -514,21 +526,6 @@
     self.startStop.selectedSegmentIndex = 0;
     
     //NSLog(@"D");
-}
-
--(void)runOptionC{
-    manager.delegate = self;
-    manager.desiredAccuracy = kCLLocationAccuracyBest;
-    
-    [manager requestAlwaysAuthorization];
-    [manager requestWhenInUseAuthorization];
-    [manager startUpdatingLocation];
-    
-    pingCount = 0;
-    
-    self.startStop.selectedSegmentIndex = 0;
-    //[self initializeMap];
-    //NSLog(@"E");
 }
 
 -(void)runOptionE{
@@ -577,7 +574,7 @@
     //NSLog([self dateAndTime]);
     
     if([currentOption isEqualToString:@"A"]){
-        [hello show];
+        [helloAlert show];
         autoTimeStamp = [self dateAndTime];
     }
 
@@ -590,7 +587,7 @@
     }
     
     if([currentOption isEqualToString:@"C"]){
-        [helloC show];
+        [helloCAlert show];
         [manager startUpdatingLocation];
         pingCount = 0;
         
@@ -598,10 +595,7 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
-    //NSLog(@"Exited Region - %@", region.identifier);
-    //NSLog(@"%f",[self timeStamp]);
-    //NSLog([self dateAndTime]);
-    [goodbye show];
+    [goodbyeAlert show];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region {
@@ -663,9 +657,7 @@
             //NSLog(@"%@ %@\n%@ %@\n%@\n%@", self.address.text);
         }else {
             //NSLog(@"%@", error.debugDescription);
-            
         }
-        
     }];
     
     if([currentOption isEqualToString:@"A"]){
@@ -673,7 +665,7 @@
 
         if(distance <= [currentDestination[@"radius"] doubleValue]){
             if(!entered){
-                [GPSPing show];
+                [gpsPingAlert  show];
                 autoTimeStamp = [self dateAndTime];
                 entered = true;
             }
@@ -683,7 +675,7 @@
                 geofences = [self buildGeofenceData];
                 [self initializeRegionMonitoring:geofences];
                 [manager stopUpdatingLocation];
-                self.pingAndConfirm.text = @"GPS ping is done";
+                self.readOut.text = @"GPS ping is done";
             }
         }
     }
@@ -694,7 +686,7 @@
         
         if(distance <= [currentDestination[@"radius"] doubleValue]){
             if(!entered){
-                [GPSPing show];
+                [gpsPingAlert  show];
                 autoTimeStamp = [self dateAndTime];
                 entered = true;
             }
@@ -704,7 +696,7 @@
                 geofences = [self buildGeofenceData];
                 [self initializeRegionMonitoring:geofences];
                 [manager stopUpdatingLocation];
-                self.pingAndConfirm.text = @"GPS ping is done";
+                self.readOut.text = @"GPS ping is done";
             }
         }
     }
@@ -714,7 +706,7 @@
         
         if(distance <= [currentDestination[@"radius"] doubleValue]){
             if(!entered){
-                [GPSPing show];
+                [gpsPingAlert  show];
                 autoTimeStamp = [self dateAndTime];
                 entered = true;
             }
@@ -724,7 +716,7 @@
                 geofences = [self buildGeofenceData];
                 [self initializeRegionMonitoring:geofences];
                 [manager stopUpdatingLocation];
-                self.pingAndConfirm.text = @"GPS ping is done";
+                self.readOut.text = @"GPS ping is done";
             }
         }
     }
@@ -734,7 +726,7 @@
         
         if(distance <= [currentDestination[@"radius"] doubleValue]){
             if(!entered){
-                [hello show];
+                [helloAlert show];
                 entered = true;
             }
         }
@@ -745,7 +737,7 @@
         
         if(distance <= [currentDestination[@"radius"] doubleValue]){
             if(!entered){
-                [hello show];
+                [helloAlert show];
                 entered = true;
             }
         }
@@ -757,7 +749,7 @@
         
         if(distance <= [currentDestination[@"radius"] doubleValue]){
             if(!entered){
-                [hello show];
+                [helloAlert show];
                 entered = true;
             }
         }
@@ -765,6 +757,22 @@
     
     [self batteryStatus];
     pingCount++;
+}
+
+//formatting
+- (NSTimeInterval) timeStamp {
+    return [[NSDate date] timeIntervalSince1970];
+}
+
+-(NSString*) dateAndTime{
+    // get current date/time
+    NSString *date;
+    NSDate *now = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd-HH-mm-ss"];
+    date = [dateFormatter stringFromDate:now];
+    
+    return date;
 }
 
 //end/////////////////////////////////////////////////////////

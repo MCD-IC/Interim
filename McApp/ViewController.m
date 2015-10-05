@@ -22,6 +22,9 @@
 @property (strong, nonatomic) IBOutlet UILabel *destinationLocation;
 @property (strong, nonatomic) IBOutlet UILabel *pingAndConfirm;
 
+@property (strong, nonatomic) IBOutlet UIButton *confirmGeoUI;
+@property (strong, nonatomic) IBOutlet UIButton *endSession;
+
 - (IBAction)startStop:(id)sender;
 - (IBAction)confirmGeo:(id)sender;
 - (IBAction)gotoResults:(id)sender;
@@ -42,7 +45,6 @@
     NSArray *geofences;
     MKCircle *circle;
 
-
     UIAlertView *hello;
     UIAlertView *helloC;
     UIAlertView *goodbye;
@@ -50,6 +52,7 @@
     UIAlertView *gotoSettings;
     UIAlertView *GPSPing;
     UIAlertView *geo;
+    UIAlertView *end;
     
     NSDictionary *currentDestination;
     NSString *proximity;
@@ -65,12 +68,13 @@
 
     int pingCount;
     bool entered;
+    bool inSession;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = @"Current Location";
+    self.title = @"Current Session";
     self.startStop.selectedSegmentIndex = 1;
     
     manager = [[CLLocationManager alloc] init];
@@ -83,13 +87,17 @@
     [[UIDevice currentDevice] batteryLevel];
     [[UIDevice currentDevice] batteryState];
     
-    
-    if([currentDestination count] < 1)
-        self.confirmGeofence.enabled = false;
-    else
-        self.confirmGeofence.enabled = true;
+    if([currentDestination count] < 1){
+        self.confirmGeoUI.hidden = true;
+        self.endSession.hidden = true;
+        
+    }else{
+        self.endSession.hidden = false;
+        self.confirmGeoUI.hidden = false;
+    }
     
     currentOption = @"";
+    inSession = false;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -133,8 +141,8 @@
     GPSPing = [[UIAlertView alloc] initWithTitle:@"At McDonald's"
                                          message:@"It looks like you are already at McDonald's"
                                         delegate:self
-                               cancelButtonTitle:@"True"
-                               otherButtonTitles:@"False", nil];
+                               cancelButtonTitle:@"Yes"
+                               otherButtonTitles:@"No", nil];
     
     
     geo = [[UIAlertView alloc] initWithTitle:@"Are you at McDonald's?"
@@ -142,6 +150,12 @@
                                                  delegate:self
                                         cancelButtonTitle:@"Yes"
                                         otherButtonTitles:@"No", nil];
+    
+    end = [[UIAlertView alloc] initWithTitle:@"You are In Session!"
+                                     message:@"Are you sure you want to end this session?"
+                                    delegate:self
+                           cancelButtonTitle:@"Yes"
+                           otherButtonTitles:@"No", nil];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -155,7 +169,19 @@
             self.pingAndConfirm.text = [self dateAndTime];
             //[self performSegueWithIdentifier: @"toResults" sender: self];
             //[self stopData];
-
+            NSMutableDictionary *md = @{@"runner":@"tom"};
+            
+            md[@"waiter"] = @"bob";
+            
+            NSLog(@"%@", md);
+        }
+    }
+    
+    if(alertView == end){
+        if (buttonIndex == 0) {
+            [self performSegueWithIdentifier: @"toResults" sender: self];
+            [self stopData];
+            inSession = false;
         }
     }
     
@@ -295,8 +321,12 @@
             else if([currentOption isEqualToString:@"F"]) {
                 [self runOptionF];
             }
+            
             entered = false;
-            self.confirmGeofence.enabled = true;
+            self.confirmGeoUI.hidden = false;
+            self.endSession.hidden = false;
+            self.pingAndConfirm.text = @"If your are at the radius and there isn't an auto alert.";
+            inSession = true;
         }
     }@catch(NSException *exception){
         [gotoSettings show];
@@ -328,13 +358,16 @@
 }
 
 - (IBAction)confirmGeo:(id)sender {
-    //NSLog(@"%f",[self timeStamp]);
-    //NSLog([self dateAndTime]);
     [geo show];
+    
+    
 }
 
 - (IBAction)gotoResults:(id)sender {
-    [self performSegueWithIdentifier: @"toResults" sender: self];
+    if(inSession){
+        [end show];
+    }
+    //[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://45.55.238.244/int-data/"]];
 }
 
 //end////////////////////////////////////////////////////////
@@ -683,6 +716,26 @@
         }
     }
     
+    if([currentOption isEqualToString:@"C"]){
+        //NSLog(@"Pinging, option b");
+        
+        if(distance <= [currentDestination[@"radius"] doubleValue]){
+            if(!entered){
+                [GPSPing show];
+                autoTimeStamp = [self dateAndTime];
+                entered = true;
+            }
+        }else {
+            //NSLog(@"ping count %d",pingCount);
+            if(pingCount == 6){
+                geofences = [self buildGeofenceData];
+                [self initializeRegionMonitoring:geofences];
+                [manager stopUpdatingLocation];
+                self.pingAndConfirm.text = @"GPS ping is done";
+            }
+        }
+    }
+    
     if([currentOption isEqualToString:@"D"]){
         //NSLog(@"Pinging, option d");
         
@@ -705,25 +758,6 @@
         }
     }
     
-    if([currentOption isEqualToString:@"C"]){
-        //NSLog(@"Pinging, option b");
-        
-        if(distance <= [currentDestination[@"radius"] doubleValue]){
-            if(!entered){
-                [GPSPing show];
-                autoTimeStamp = [self dateAndTime];
-                entered = true;
-            }
-        }else {
-            //NSLog(@"ping count %d",pingCount);
-            if(pingCount == 6){
-                geofences = [self buildGeofenceData];
-                [self initializeRegionMonitoring:geofences];
-                [manager stopUpdatingLocation];
-                self.pingAndConfirm.text = @"GPS ping is done";
-            }
-        }
-    }
     
     if([currentOption isEqualToString:@"F"]){
         //NSLog(@"Pinging, option d");

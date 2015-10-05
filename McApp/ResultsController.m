@@ -8,6 +8,9 @@
 
 #import "ResultsController.h"
 #import <Firebase/Firebase.h>
+#import <CoreTelephony/CTCarrier.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <sys/utsname.h>
 
 @interface ResultsController ()
 
@@ -42,6 +45,11 @@ UIAlertView  *sendAlert;
     
     self.nameTextField.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberName"];
     self.sendingLabel.text = @"";
+    
+    CTTelephonyNetworkInfo *netinfo = [[CTTelephonyNetworkInfo alloc] init];
+    CTCarrier *carrier = [netinfo subscriberCellularProvider];
+    NSLog(deviceName());
+    NSLog(@"Carrier Name: %@", [carrier carrierName]);
 }
 
 - (IBAction)saveData:(id)sender {
@@ -66,10 +74,10 @@ UIAlertView  *sendAlert;
 }
 
 -(void)beforeSendAlert{
-    sendAlert = [[UIAlertView alloc] initWithTitle:@"Please complete the session."
+    sendAlert = [[UIAlertView alloc] initWithTitle:@"To save a session results, the session must be complete."
                                         message:@""
                                        delegate:self
-                              cancelButtonTitle:@"OK"
+                              cancelButtonTitle:@"Okay"
                               otherButtonTitles:nil];
     [sendAlert show];
 }
@@ -92,7 +100,7 @@ UIAlertView  *sendAlert;
         
         if (error) {
             NSLog(@"Data could not be saved.");
-            UIAlertView *alertA = [[UIAlertView alloc] initWithTitle:@"Not Sent"
+            UIAlertView *alertA = [[UIAlertView alloc] initWithTitle:@"Server error"
                                                              message:@"Please try again"
                                                             delegate:self
                                                    cancelButtonTitle:@"OK"
@@ -101,7 +109,7 @@ UIAlertView  *sendAlert;
         } else {
             NSLog(@"Data saved successfully.");
             UIAlertView *alertB = [[UIAlertView alloc] initWithTitle:@"Sent"
-                                                message:@"Your data was saved to the cloud"
+                                                message:@"Your data was saved to the cloud."
                                                delegate:self
                                       cancelButtonTitle:@"OK"
                                       otherButtonTitles: nil];
@@ -121,8 +129,26 @@ UIAlertView  *sendAlert;
     [self.view endEditing:YES];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if(alertView == sendAlert){
+        if (buttonIndex == 1) {
+            NSLog(@"Cancel");
+        }else{
+            NSLog(@"OK");
+            [self saveAndSend];
+        }
+    }
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
+}
+
+NSString* deviceName(){
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    
+    return [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
 }
 
 @end

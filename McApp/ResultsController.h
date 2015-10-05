@@ -23,6 +23,7 @@
 @property (nonatomic, retain) NSString *batteryLevel;
 @property (nonatomic, retain) NSString *option;
 @property (nonatomic, retain) NSString *gpsTimeStamp;
+@property (nonatomic, retain) NSString *inSession;
 
 @property (nonatomic, weak) id<ResultsControllerDelegate> delegate;
 

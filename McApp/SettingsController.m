@@ -55,6 +55,8 @@ NSDictionary *destination;
 NSString *setLatitude;
 NSString *setLongitude;
 NSString *setTitle;
+    
+BOOL inSession;
 }
 
 - (void)viewDidLoad {
@@ -88,8 +90,12 @@ NSString *setTitle;
     self.customTitle.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"customLocation"][@"title"];
     self.customLatitude.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"customLocation"][@"latitude"];
     self.customLongitude.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"customLocation"][@"longitude"];
+    self.proximity.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberRadius"];
+
     
      //NSLog(@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"customLocation"]);
+    
+    inSession = false;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -176,6 +182,9 @@ NSString *setTitle;
                     destination = @{@"latitude":setLatitude, @"longitude":setLongitude, @"radius":self.proximity.text, @"title":setTitle};
                     NSLog(@"%@", destination);
                     [self.navigationController popViewControllerAnimated:YES];
+                    
+                    [[NSUserDefaults standardUserDefaults] setObject:self.proximity.text forKey:@"rememberRadius"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
                 }@catch(NSException *exception){
                   
                 }
@@ -200,7 +209,6 @@ NSString *setTitle;
             setLatitude = @"41.6721034";
             setLongitude = @"-88.0681658";
             setTitle = @"Romeoville";
-            [self clearCustom];
         }
     }
     
@@ -214,7 +222,6 @@ NSString *setTitle;
             setLatitude = @"41.8860837";
             setLongitude = @"-87.6321842";
             setTitle = @"Chicago";
-            [self clearCustom];
         }
     }
     
@@ -228,7 +235,6 @@ NSString *setTitle;
             setLatitude = @"41.8477231";
             setLongitude = @"-87.9476483";
             setTitle = @"Oak Brook";
-            [self clearCustom];
         }
     }
     
@@ -342,8 +348,8 @@ NSString *setTitle;
     setAlert = [[UIAlertView alloc] initWithTitle:@"ALL SET?"
                                               message:@""
                                              delegate:self
-                                    cancelButtonTitle:@"OK"
-                                    otherButtonTitles:@"Cancel", nil];
+                                    cancelButtonTitle:@"Yes"
+                                    otherButtonTitles:@"No", nil];
     [setAlert show];
 }
 - (IBAction)enterCustomLocation:(id)sender {

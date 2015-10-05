@@ -169,11 +169,6 @@
             self.pingAndConfirm.text = [self dateAndTime];
             //[self performSegueWithIdentifier: @"toResults" sender: self];
             //[self stopData];
-            NSMutableDictionary *md = @{@"runner":@"tom"};
-            
-            md[@"waiter"] = @"bob";
-            
-            NSLog(@"%@", md);
         }
     }
     
@@ -359,8 +354,6 @@
 
 - (IBAction)confirmGeo:(id)sender {
     [geo show];
-    
-    
 }
 
 - (IBAction)gotoResults:(id)sender {

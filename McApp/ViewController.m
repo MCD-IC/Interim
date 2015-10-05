@@ -63,10 +63,11 @@
     
     //Data Points
     NSDictionary *currentDestination;
+    NSDictionary *sessionTime;
     NSString *fineRadius;
     NSString *currentOption;
 
-    //Radii Data POints
+    //Radii Data Points
     NSString *autoTimeStamp;
     NSString *manualTimeStamp;
     NSString *battery;
@@ -120,13 +121,13 @@
     
     
     helloAlert = [[UIAlertView alloc] initWithTitle:@"Auto Boundary Crossing Alert - Arrival"
-                                                       message:@"Are you at McDonald's"
+                                                       message:@"Are you at McDonald's?"
                                                       delegate:self
                                              cancelButtonTitle:@"Yes"
                                              otherButtonTitles:@"No", nil];
     
     helloCAlert = [[UIAlertView alloc] initWithTitle:@"Auto Boundary Crossing Alert - Arrival"
-                                       message:@"Are you at McDonald's"
+                                       message:@"Are you at McDonald's?"
                                       delegate:self
                              cancelButtonTitle:@"Yes"
                              otherButtonTitles:@"No", nil];
@@ -138,20 +139,20 @@
                                              otherButtonTitles:nil];
 
     
-    gpsPingAlert = [[UIAlertView alloc] initWithTitle:@"At McDonald's"
-                                         message:@"It looks like you are already at McDonald's"
+    gpsPingAlert = [[UIAlertView alloc] initWithTitle:@"GPS Ping"
+                                         message:@"Are at McDonald's?"
                                         delegate:self
                                cancelButtonTitle:@"Yes"
                                otherButtonTitles:@"No", nil];
     
     
-    manualConfimationAlert = [[UIAlertView alloc] initWithTitle:@"Are you at McDonald's?"
-                                                  message:@"This a manual geofence confirmation"
+    manualConfimationAlert = [[UIAlertView alloc] initWithTitle:@"Manual Boundary Crossing Alert"
+                                                  message:@"This a manual geofence confirmation."
                                                  delegate:self
                                         cancelButtonTitle:@"Yes"
                                         otherButtonTitles:@"No", nil];
     
-    endingAlert = [[UIAlertView alloc] initWithTitle:@"You are In Session!"
+    endingAlert = [[UIAlertView alloc] initWithTitle:@"Ending Session?"
                                      message:@"Are you sure you want to end this session?"
                                     delegate:self
                            cancelButtonTitle:@"Yes"
@@ -210,11 +211,9 @@
         }
     }
 }
-
-
 //end/////////////////////////////////////////////////////////
 
-//Capturing segue data/////////////////////////////////////////////////////////
+//Segue data sharing/////////////////////////////////////////////////////////
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
     SettingsController *transferSettingsController = segue.destinationViewController;
     if ([[segue identifier] isEqualToString:@"toSettings"]){
@@ -232,7 +231,7 @@
         */
         
         //transferResultsController.radii = ;
-        //transferResultsController.sessionTime = ;
+        transferResultsController.sessionTime = sessionTime;
         transferResultsController.option = self.option.text;
         transferResultsController.batteryUsed = battery;
         transferResultsController.delegate = self;
@@ -240,7 +239,7 @@
 }
 //end/////////////////////////////////////////////////////////
 
-//set destination parameters from settings/////////////////////////////////////////////////////////
+//Set destination parameters from settings/////////////////////////////////////////////////////////
 - (void)dataFromChoice:(NSString *)data{
     //NSLog(data);
     //NSLog(currentOption);
@@ -276,9 +275,6 @@
     destinationPlot = [[CLLocation alloc] initWithLatitude:[data[@"latitude"] doubleValue] longitude:[data[@"longitude"] doubleValue]];
     destinationCoordinate.latitude = [data[@"latitude"] doubleValue];
     destinationCoordinate.longitude = [data[@"longitude"] doubleValue];
-    
-
-    //NSLog(@"Dictionary: %@", [data description]);
 }
 
 //end/////////////////////////////////////////////////////////

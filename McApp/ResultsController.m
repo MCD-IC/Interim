@@ -14,14 +14,14 @@
 
 @interface ResultsController ()
 
-@property (strong, nonatomic) IBOutlet UILabel *autoTimeStampLabel;
-@property (strong, nonatomic) IBOutlet UILabel *manualTimeStampLabel;
-@property (strong, nonatomic) IBOutlet UILabel *batteryUsageLabel;
-@property (strong, nonatomic) IBOutlet UILabel *optionLevel;
 @property (strong, nonatomic) IBOutlet UILabel *sendingLabel;
 
 @property (strong, nonatomic) IBOutlet UITextField *nameTextField;
 @property (strong, nonatomic) IBOutlet UITextField *sessionTextField;
+@property (strong, nonatomic) IBOutlet UILabel *wifiLabel;
+@property (strong, nonatomic) IBOutlet UITextView *resultText;
+
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *sending;
 
 - (IBAction)saveData:(id)sender;
 
@@ -31,13 +31,14 @@
 
 UIAlertView  *sendAlert;
 UIAlertView  *sessionAlert;
-
-NSString *wifiOnOff;
 NSString *cellProvider;
 NSString *phoneType;
 
 Firebase *ref;
 Firebase *usersRef;
+NSDictionary *sessionData;
+
+bool sent;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -50,70 +51,87 @@ Firebase *usersRef;
     self.nameTextField.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberName"];
     self.sendingLabel.text = @"";
 
-    //self.batteryUsage.text  = self.batteryLevel;
-    //self.autoTimeStampLabel.text = self.autoTimeStamp;
-    //self.manualTimeStampLabel.text  = self.manualTimeStamp;
-
-    self.optionLevel.text  = self.option;
-
     phoneType = deviceName();
     cellProvider = [carrier carrierName];
     
-    //NSLog(self.option);
-    //NSLog(deviceName());
-    //NSLog(@"Carrier Name: %@", [carrier carrierName]);
+    [self.resultText setEditable:NO];
+    
+    self.resultText.text = [NSString stringWithFormat:@"%@",@{@"option": self.option,
+                                                              @"autoTimeStamp": self.autoTimeStamp,
+                                                              @"manualTimeStamp": self.manualTimeStamp,
+                                                              @"battery":self.batteryUsed,
+                                                              @"location": self.location,
+                                                              @"provider": cellProvider,
+                                                              @"phoneType": phoneType,
+                                                              @"wifiOnOff": self.wifiLabel.text,
+                                                              @"sessionTime":self.sessionTime
+                                                              }];
+    self.sending.hidden = true;
 }
-
+- (IBAction)wifiSwitch:(id)sender {
+    if([sender isOn]){
+        self.wifiLabel.text = @"Yes";
+        self.resultText.text = [NSString stringWithFormat:@"%@",@{@"option": self.option,
+                                                                  @"autoTimeStamp": self.autoTimeStamp,
+                                                                  @"manualTimeStamp": self.manualTimeStamp,
+                                                                  @"battery":self.batteryUsed,
+                                                                  @"location": self.location,
+                                                                  @"provider": cellProvider,
+                                                                  @"phoneType": phoneType,
+                                                                  @"wifiOnOff": self.wifiLabel.text,
+                                                                  @"sessionTime":self.sessionTime
+                                                                  }];
+    }else{
+        self.wifiLabel.text = @"No";
+        self.resultText.text = [NSString stringWithFormat:@"%@",@{@"option": self.option,
+                                                                  @"autoTimeStamp": self.autoTimeStamp,
+                                                                  @"manualTimeStamp": self.manualTimeStamp,
+                                                                  @"battery":self.batteryUsed,
+                                                                  @"location": self.location,
+                                                                  @"provider": cellProvider,
+                                                                  @"phoneType": phoneType,
+                                                                  @"wifiOnOff": self.wifiLabel.text,
+                                                                  @"sessionTime":self.sessionTime
+                                                                  }];
+    }
+}
 - (IBAction)saveData:(id)sender {
-
-    if(![self.autoTimeStampLabel.text isEqualToString:@""]){
-        if(![self.manualTimeStampLabel.text isEqualToString:@""]){
-            if(![self.nameTextField.text isEqualToString:@""]){
-                if(![self.sessionTextField.text isEqualToString:@""]){
-                    [self saveAndSend];
-                }else{
-                    [self beforeSendAlert];
-                }
-            }else{
-                [self beforeSendAlert];
-            }
+    if(![self.nameTextField.text isEqualToString:@""]){
+        if(![self.sessionTextField.text isEqualToString:@""]){
+            self.sending.hidden = false;
+            self.sendingLabel.text = @"sending...";
+            [self saveAndSend];
         }else{
             [self beforeSendAlert];
         }
     }else{
         [self beforeSendAlert];
     }
-}
 
--(void)beforeSendAlert{
-    sendAlert = [[UIAlertView alloc] initWithTitle:@"To save a session results, the session must be complete."
-                                        message:@""
-                                       delegate:self
-                              cancelButtonTitle:@"Okay"
-                              otherButtonTitles:nil];
-    [sendAlert show];
 }
 
 -(void) saveAndSend{
     ref = [[Firebase alloc] initWithUrl:@"https://geogps-interim.firebaseio.com/"];
-    usersRef = [ref childByAppendingPath: self.nameTextField.text];
+    usersRef = [ref childByAppendingPath: [self.nameTextField.text stringByReplacingOccurrencesOfString:@" " withString:@"_"]];
     
-    [ref observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"%@", snapshot.value[self.nameTextField.text][self.sessionTextField.text]);
-        if([snapshot.value[self.nameTextField.text][self.sessionTextField.text] count] == 0){
+    [ref observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+        NSLog(@"pre-snapshot %@", snapshot.value[[self.nameTextField.text stringByReplacingOccurrencesOfString:@" " withString:@"_"]][[self.sessionTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""]]);
+        
+        if([snapshot.value[[self.nameTextField.text stringByReplacingOccurrencesOfString:@" " withString:@"_"]][[self.sessionTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""]] count] == 0){
             NSLog(@"fill it");
             
             [self dataToSave];
         }else{
             sessionAlert = [[UIAlertView alloc] initWithTitle:@"This session name is already taken."
-                                                   message:@"Would you like to overwrite?"
-                                                  delegate:self
-                                         cancelButtonTitle:@"Yes"
-                                         otherButtonTitles:@"No", nil];
+                                                      message:@"Would you like to overwrite?"
+                                                     delegate:self
+                                            cancelButtonTitle:@"Yes"
+                                            otherButtonTitles:@"No", nil];
             [sessionAlert show];
+            
+            self.sending.hidden = true;
+            self.sendingLabel.text = @"";
         }
-
-
     }];
     
     [[NSUserDefaults standardUserDefaults] setObject:self.nameTextField.text forKey:@"rememberName"];
@@ -122,22 +140,33 @@ Firebase *usersRef;
     [self.view endEditing:YES];
 }
 
--(void) dataToSave{
-    NSDictionary *sessionData = @{self.sessionTextField.text: @{
-                                    @"option": self.optionLevel.text,
-                                    @"location": self.location,
-                                    @"provider": cellProvider,
-                                    @"phoneType": phoneType,
-                                    @"wifiOnOff": wifiOnOff,
-                                    @"radii":self.radii,
-                                    @"sessionTime":self.sessionTime
-                                }};
+-(void)beforeSendAlert{
+    sendAlert = [[UIAlertView alloc] initWithTitle:@"To save the session results, complete  your name and session title."
+                                               message:@""
+                                              delegate:self
+                                     cancelButtonTitle:@"Okay"
+                                     otherButtonTitles:nil];
+    [sendAlert show];
+}
     
+    
+-(void) dataToSave{
+    sessionData = @{[self.sessionTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""]: @{
+                    @"option": self.option,
+                    @"autoTimeStamp": self.autoTimeStamp,
+                    @"battery":self.batteryUsed,
+                    @"manualTimeStamp": self.manualTimeStamp,
+                    @"location": self.location,
+                    @"provider": cellProvider,
+                    @"phoneType": phoneType,
+                    @"wifiOnOff": self.wifiLabel.text,
+                    @"sessionTime":self.sessionTime
+                    }};
+
     NSLog(@"%@", sessionData);
-    /*
     
     [usersRef updateChildValues: sessionData withCompletionBlock:^(NSError *error, Firebase *ref) {
-        
+        self.sending.hidden =  false;
         self.sendingLabel.text = @"sending...";
         
         if (error) {
@@ -148,6 +177,10 @@ Firebase *usersRef;
                                                    cancelButtonTitle:@"OK"
                                                    otherButtonTitles: nil];
             [alertA show];
+            
+            self.sending.hidden =  true;
+            self.sendingLabel.text = @"";
+            
         } else {
             NSLog(@"Data saved successfully.");
             UIAlertView *alertB = [[UIAlertView alloc] initWithTitle:@"Sent"
@@ -158,29 +191,21 @@ Firebase *usersRef;
             [alertB show];
             
             self.sendingLabel.text = @"sent";
+            self.sending.hidden =  true;
         }
     }];
     
     [[NSUserDefaults standardUserDefaults] setObject:sessionData forKey:@"session"];
-    [[NSUserDefaults standardUserDefaults] synchronize];*/
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(alertView == sendAlert){
-        if (buttonIndex == 1) {
-            NSLog(@"Cancel");
-        }else{
-            NSLog(@"OK");
-            [self saveAndSend];
-        }
-    }
-    
     if(alertView == sessionAlert){
         if (buttonIndex == 1) {
             NSLog(@"Cancel");
         }else{
             NSLog(@"OK");
-            [self saveAndSend];
+            [self dataToSave];
         }
     }
 }

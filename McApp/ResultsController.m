@@ -94,7 +94,21 @@ bool sent;
                                                                   @"sessionTime":self.sessionTime
                                                                   }];
     }
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didRecognizeTapGesture:)];
+    [self.resultText.superview addGestureRecognizer:tapGesture];
 }
+
+- (void)didRecognizeTapGesture:(UITapGestureRecognizer*)gesture{
+    CGPoint point = [gesture locationInView:gesture.view];
+    
+    if (gesture.state == UIGestureRecognizerStateEnded){
+        if (CGRectContainsPoint(self.resultText.frame, point)){
+            [self.view endEditing:YES];
+        }
+    }
+}
+
 - (IBAction)saveData:(id)sender {
     if(![self.nameTextField.text isEqualToString:@""]){
         if(![self.sessionTextField.text isEqualToString:@""]){
@@ -115,22 +129,26 @@ bool sent;
     usersRef = [ref childByAppendingPath: [self.nameTextField.text stringByReplacingOccurrencesOfString:@" " withString:@"_"]];
     
     [ref observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"pre-snapshot %@", snapshot.value[[self.nameTextField.text stringByReplacingOccurrencesOfString:@" " withString:@"_"]][[self.sessionTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""]]);
-        
-        if([snapshot.value[[self.nameTextField.text stringByReplacingOccurrencesOfString:@" " withString:@"_"]][[self.sessionTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""]] count] == 0){
-            NSLog(@"fill it");
-            
-            [self dataToSave];
-        }else{
-            sessionAlert = [[UIAlertView alloc] initWithTitle:@"This session name is already taken."
-                                                      message:@"Would you like to overwrite?"
-                                                     delegate:self
-                                            cancelButtonTitle:@"Yes"
-                                            otherButtonTitles:@"No", nil];
-            [sessionAlert show];
-            
-            self.sending.hidden = true;
-            self.sendingLabel.text = @"";
+        @try {
+            if([snapshot.value[[self.nameTextField.text stringByReplacingOccurrencesOfString:@" " withString:@"_"]][[self.sessionTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""]] count] == 0){
+                NSLog(@"fill it");
+                
+                [self dataToSave];
+            }else{
+                sessionAlert = [[UIAlertView alloc] initWithTitle:@"This session name is already taken."
+                                                          message:@"Would you like to overwrite?"
+                                                         delegate:self
+                                                cancelButtonTitle:@"Yes"
+                                                otherButtonTitles:@"No", nil];
+                [sessionAlert show];
+                
+                self.sending.hidden = true;
+                self.sendingLabel.text = @"";
+            }
+        }
+        @catch (NSException *exception) {
+            NSLog(@"Exception:%@",exception);
+            //[self dataToSave];
         }
     }];
     
@@ -141,7 +159,7 @@ bool sent;
 }
 
 -(void)beforeSendAlert{
-    sendAlert = [[UIAlertView alloc] initWithTitle:@"To save the session results, complete  your name and session title."
+    sendAlert = [[UIAlertView alloc] initWithTitle:@"To save the session results, complete your name and session title."
                                                message:@""
                                               delegate:self
                                      cancelButtonTitle:@"Okay"

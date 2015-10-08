@@ -66,6 +66,7 @@
     
     //Data Points
     NSDictionary *currentDestination;
+    NSDictionary *startLocation;
     NSMutableDictionary *sessionTime;
     NSString *currentOption;
 
@@ -82,6 +83,7 @@
     bool inSession;
     int manualCount;
     int autoCount;
+    bool bInitLocation;
 }
 
 - (void)viewDidLoad {
@@ -265,6 +267,7 @@
     if ([[segue identifier] isEqualToString:@"toResults"]){
         transferResultsController.autoTimeStamp = autoTimeStamps;
         transferResultsController.manualTimeStamp = manualTimeStamps;
+        transferResultsController.startLocation = startLocation;
         transferResultsController.sessionTime = sessionTime;
         transferResultsController.option = self.option.text;
         transferResultsController.location = currentDestination;
@@ -328,6 +331,7 @@
             }
             else if([currentOption isEqualToString:@"B"]) {
                 [self runOptionB];
+                bInitLocation = false;
             }
             else if([currentOption isEqualToString:@"C"]) {
                 [self runOptionC];
@@ -730,6 +734,8 @@
                 autoCount++;
                 
                 entered = true;
+                
+                startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
             }
         }else {
             //NSLog(@"ping count %d",pingCount);
@@ -738,6 +744,8 @@
                 [self initializeRegionMonitoring:geofences];
                 [manager stopUpdatingLocation];
                 self.readOut.text = @"GPS ping is done";
+                
+                startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
             }
         }
     }
@@ -751,6 +759,8 @@
                 autoCount++;
                 
                 entered = true;
+                
+                startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
             }
         }else {
             //NSLog(@"ping count %d",pingCount);
@@ -759,6 +769,11 @@
                 [self initializeRegionMonitoring:geofences];
                 [manager stopUpdatingLocation];
                 self.readOut.text = @"GPS ping is done";
+                
+                if(!bInitLocation){
+                    startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
+                    bInitLocation = true;
+                }
             }
         }
     }
@@ -772,6 +787,8 @@
                 autoCount++;
                 
                 entered = true;
+                
+                startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
             }
         }else {
             //NSLog(@"ping count %c",pingCount);
@@ -780,6 +797,8 @@
                 [self initializeRegionMonitoring:geofences];
                 [manager stopUpdatingLocation];
                 self.readOut.text = @"GPS ping is done";
+                
+                startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
             }
         }
     }
@@ -797,6 +816,9 @@
                 entered = true;
             }
         }
+        if(pingCount == 6){
+            startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
+        }
     }
     
     if([currentOption isEqualToString:@"E"]){
@@ -809,6 +831,9 @@
                 entered = true;
             }
         }
+        if(pingCount == 6){
+            startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
+        }
     }
     
     if([currentOption isEqualToString:@"F"]){
@@ -820,6 +845,9 @@
                 autoCount++;
                 entered = true;
             }
+        }
+        if(pingCount == 6){
+            startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
         }
     }
     

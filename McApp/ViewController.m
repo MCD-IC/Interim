@@ -1,6 +1,7 @@
 #import "ViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
+#import <AudioToolbox/AudioToolBox.h>
 #import <MapKit/MapKit.h>
 #import "SettingsController.h"
 #import "ResultsController.h"
@@ -30,8 +31,10 @@
 - (IBAction)confirmGeo:(id)sender;
 - (IBAction)gotoResults:(id)sender;
 
-
 @property (strong, nonatomic) IBOutlet UIButton *confirmGeofence;
+
+
+
 
 @end
 
@@ -95,8 +98,6 @@
     manager = [[CLLocationManager alloc] init];
     geocoder = [[CLGeocoder alloc] init];
     entered = false;
-
-    [self alerts];
     
     [[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
     
@@ -122,73 +123,18 @@
     autoCount = 0;
     
     self.readOut.text = @"To begin, go to settings and set parameters.";
-    
-    
+
     //[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://45.55.238.244/int-data/"]];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+
 //Alerts /////////////////////////////////////////////////////////
--(void) alerts{
-    gotoSettingsAlert = [[UIAlertView alloc] initWithTitle:@"Please Enter Your Settings"
-                                       message:@"You are being sent to the settings screen."
-                                      delegate:self
-                             cancelButtonTitle:@"Okay"
-                             otherButtonTitles:nil];
-    
-    
-    gpsHelloAlert = [[UIAlertView alloc] initWithTitle:@"Auto GPS Boundary Crossing Alert"
-                                                       message:@"Are you at McDonald's?"
-                                                      delegate:self
-                                             cancelButtonTitle:@"Yes"
-                                             otherButtonTitles:@"No", nil];
-    
-    geofenceHelloCAlert = [[UIAlertView alloc] initWithTitle:@"Auto Geofence Boundary Crossing Alert - Arrival"
-                                       message:@"Are you at McDonald's?"
-                                      delegate:self
-                             cancelButtonTitle:@"Yes"
-                             otherButtonTitles:@"No", nil];
-    
-    geofenceHelloCAlert = [[UIAlertView alloc] initWithTitle:@"Auto Geofence Crossing Alert - Arrival"
-                                             message:@"Are you at McDonald's?"
-                                            delegate:self
-                                   cancelButtonTitle:@"Yes"
-                                   otherButtonTitles:@"No,", nil];
-    
-    goodbyeAlert = [[UIAlertView alloc] initWithTitle:@"Auto Geofence Boundary Crossing Alert - Leaving"
-                                                       message:@"Have the best day."
-                                                      delegate:self
-                                             cancelButtonTitle:@"See ya"
-                                             otherButtonTitles:nil];
-    
-    gpsPingAlert = [[UIAlertView alloc] initWithTitle:@"Auto GPS Ping"
-                                         message:@"Are you at McDonald's?"
-                                        delegate:self
-                               cancelButtonTitle:@"Yes"
-                               otherButtonTitles:@"No", nil];
-    
-    manualConfimationAlert = [[UIAlertView alloc] initWithTitle:@"Manual Boundary Crossing Alert"
-                                                  message:@"This a manual geofence confirmation."
-                                                 delegate:self
-                                        cancelButtonTitle:@"Okay"
-                                        otherButtonTitles:@"Cancel", nil];
-    
-    endingAlert = [[UIAlertView alloc] initWithTitle:@"End Session?"
-                                     message:@"Ending session will sent you to results."
-                                    delegate:self
-                           cancelButtonTitle:@"Yes"
-                           otherButtonTitles:@"No", nil];
-    
-    endSessionAlert = [[UIAlertView alloc] initWithTitle:@"Your are in a session"
-                                             message:@"Press stop to end the session and see results."
-                                            delegate:self
-                                   cancelButtonTitle:@"Okay"
-                                   otherButtonTitles:nil];
-}
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if(alertView == gotoSettingsAlert){
@@ -199,6 +145,12 @@
         if (buttonIndex == 0) {
             [manualTimeStamps setObject:[self dateAndTime] forKey: [@"manualConfirmation-" stringByAppendingString:[@(manualCount) stringValue]]];
             manualCount++;
+            
+            endingAlert = [[UIAlertView alloc] initWithTitle:@"End Session?"
+                                                     message:@"Ending session will sent you to results."
+                                                    delegate:self
+                                           cancelButtonTitle:@"Yes"
+                                           otherButtonTitles:@"No", nil];
             [endingAlert show];
             self.readOut.text = [self dateAndTime];
         }
@@ -215,6 +167,11 @@
             [manualTimeStamps setObject:[self dateAndTime] forKey: [@"manualGPS-" stringByAppendingString:[@(manualCount) stringValue]]];
             manualCount++;
             
+            endingAlert = [[UIAlertView alloc] initWithTitle:@"End Session?"
+                                                     message:@"Ending session will sent you to results."
+                                                    delegate:self
+                                           cancelButtonTitle:@"Yes"
+                                           otherButtonTitles:@"No", nil];
             [endingAlert show];
         }
     }
@@ -224,6 +181,11 @@
             [manualTimeStamps setObject:[self dateAndTime] forKey: [@"manualGeofence-" stringByAppendingString:[@(manualCount) stringValue]]];
             manualCount++;
             
+            endingAlert = [[UIAlertView alloc] initWithTitle:@"End Session?"
+                                                     message:@"Ending session will sent you to results."
+                                                    delegate:self
+                                           cancelButtonTitle:@"Yes"
+                                           otherButtonTitles:@"No", nil];
             [endingAlert show];
         }
     }
@@ -233,6 +195,11 @@
             [manualTimeStamps setObject:[self dateAndTime] forKey: [@"manualGeofence-" stringByAppendingString:[@(manualCount) stringValue]]];
             manualCount++;
             
+            endingAlert = [[UIAlertView alloc] initWithTitle:@"End Session?"
+                                                     message:@"Ending session will sent you to results."
+                                                    delegate:self
+                                           cancelButtonTitle:@"Yes"
+                                           otherButtonTitles:@"No", nil];
             [endingAlert show];
         }
     }
@@ -248,6 +215,11 @@
             [manualTimeStamps setObject:[self dateAndTime] forKey: [@"manualPingGPS-" stringByAppendingString:[@(manualCount) stringValue]]];
             manualCount++;
             
+            endingAlert = [[UIAlertView alloc] initWithTitle:@"End Session?"
+                                                     message:@"Ending session will sent you to results."
+                                                    delegate:self
+                                           cancelButtonTitle:@"Yes"
+                                           otherButtonTitles:@"No", nil];
             [endingAlert show];
         }
     }
@@ -320,9 +292,17 @@
 
 //Start and stop corelocation services/////////////////////////////////////////////////////////
 - (void)startData{
+    
+    
     @try{
         if ([self.option.text isEqualToString:@""]){
-            [gotoSettingsAlert show];
+            gotoSettingsAlert = [[UIAlertView alloc] initWithTitle:@"Please Enter Your Settings"
+                                                           message:@"You are being sent to the settings screen."
+                                                          delegate:self
+                                                 cancelButtonTitle:@"Okay"
+                                                 otherButtonTitles:nil];
+            
+            [gotoSettingsAlert show]; 
             self.startStop.selectedSegmentIndex = 1;
         }else{
             
@@ -360,6 +340,12 @@
             [manualTimeStamps removeAllObjects];
         }
     }@catch(NSException *exception){
+        gotoSettingsAlert = [[UIAlertView alloc] initWithTitle:@"Please Enter Your Settings"
+                                                       message:@"You are being sent to the settings screen."
+                                                      delegate:self
+                                             cancelButtonTitle:@"Okay"
+                                             otherButtonTitles:nil];
+        
         [gotoSettingsAlert show];
     }
 }
@@ -377,6 +363,12 @@
     switch (self.startStop.selectedSegmentIndex){
         case 1:
             //NSLog(@"Off");
+            
+            endingAlert = [[UIAlertView alloc] initWithTitle:@"End Session?"
+                                                     message:@"Ending session will sent you to results."
+                                                    delegate:self
+                                           cancelButtonTitle:@"Yes"
+                                           otherButtonTitles:@"No", nil];
             [endingAlert show];
             break;
         case 0:
@@ -389,11 +381,23 @@
 }
 
 - (IBAction)confirmGeo:(id)sender {
+    manualConfimationAlert = [[UIAlertView alloc] initWithTitle:@"Manual Boundary Crossing Alert"
+                                                        message:@"This a manual geofence confirmation."
+                                                       delegate:self
+                                              cancelButtonTitle:@"Okay"
+                                              otherButtonTitles:@"Cancel", nil];
+    
     [manualConfimationAlert show];
 }
 
 - (IBAction)gotoResults:(id)sender {
     if(inSession){
+        endSessionAlert = [[UIAlertView alloc] initWithTitle:@"Your are in a session"
+                                                     message:@"Press stop to end the session and see results."
+                                                    delegate:self
+                                           cancelButtonTitle:@"Okay"
+                                           otherButtonTitles:nil];
+        
         [endSessionAlert show];
     }else{
         [self performSegueWithIdentifier: @"toResults" sender: self];
@@ -412,9 +416,7 @@
     self.confirmGeoUI.hidden = true;
     self.manualMessage.hidden = true;
     self.readOut.text = @"";
-    
 
-    
     //[autoTimeStamps removeAllObjects];
     //[manualTimeStamps removeAllObjects];
 
@@ -455,9 +457,17 @@
     NSMutableArray *geofences = [NSMutableArray array];
     
     if([currentOption isEqualToString:@"C"]){
-        NSDictionary *course = @{@"latitude":currentDestination[@"latitude"], @"longitude":currentDestination[@"longitude"], @"radius":@"800", @"title":currentDestination[@"title"]};
-        CLRegion *courseRegion = [self mapDictionaryToRegion:course];
-        [geofences addObject:courseRegion];
+        NSDictionary *earlyCourse = @{@"latitude":currentDestination[@"latitude"], @"longitude":currentDestination[@"longitude"], @"radius":@"600", @"title":currentDestination[@"title"]};
+        CLRegion *earlyCourseRegion = [self mapDictionaryToRegion:earlyCourse];
+        [geofences addObject:earlyCourseRegion];
+        
+        NSDictionary *midCourse = @{@"latitude":currentDestination[@"latitude"], @"longitude":currentDestination[@"longitude"], @"radius":@"800", @"title":currentDestination[@"title"]};
+        CLRegion *midCourseRegion = [self mapDictionaryToRegion:midCourse];
+        [geofences addObject:midCourseRegion];
+        
+        NSDictionary *lateCourse = @{@"latitude":currentDestination[@"latitude"], @"longitude":currentDestination[@"longitude"], @"radius":@"1000", @"title":currentDestination[@"title"]};
+        CLRegion *lateCourseRegion = [self mapDictionaryToRegion:lateCourse];
+        [geofences addObject:lateCourseRegion];
     }else{
         CLRegion *region = [self mapDictionaryToRegion:currentDestination];
         [geofences addObject:region];
@@ -650,6 +660,12 @@
     }
     
     if([currentOption isEqualToString:@"C"]){
+        geofenceHelloCAlert = [[UIAlertView alloc] initWithTitle:@"Auto Geofence Crossing Alert - Arrival"
+                                                         message:@"Are you at McDonald's?"
+                                                        delegate:self
+                                               cancelButtonTitle:@"Yes"
+                                               otherButtonTitles:@"No,", nil];
+        
         [geofenceHelloCAlert show];
         
         [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGeofence-" stringByAppendingString:[@(autoCount) stringValue]]];
@@ -658,9 +674,16 @@
         [manager startUpdatingLocation];
         pingCount = 0;
     }
+    
+    [self ping];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
+    goodbyeAlert = [[UIAlertView alloc] initWithTitle:@"Auto Geofence Boundary Crossing Alert - Leaving"
+                                              message:@"Have the best day."
+                                             delegate:self
+                                    cancelButtonTitle:@"See ya"
+                                    otherButtonTitles:nil];
     [goodbyeAlert show];
 }
 
@@ -729,6 +752,11 @@
 
         if(distance <= [currentDestination[@"radius"] doubleValue]){
             if(!entered){
+                gpsPingAlert = [[UIAlertView alloc] initWithTitle:@"Auto GPS Ping"
+                                                          message:@"Are you at McDonald's?"
+                                                         delegate:self
+                                                cancelButtonTitle:@"Yes"
+                                                otherButtonTitles:@"No", nil];
                 [gpsPingAlert show];
                 [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
                 autoCount++;
@@ -736,6 +764,8 @@
                 entered = true;
                 
                 startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
+                
+                [self ping];
             }
         }else {
             //NSLog(@"ping count %d",pingCount);
@@ -754,6 +784,12 @@
         //NSLog(@"Pinging, option b");
         if(distance <= [currentDestination[@"radius"] doubleValue]){
             if(!entered){
+                gpsPingAlert = [[UIAlertView alloc] initWithTitle:@"Auto GPS Ping"
+                                                          message:@"Are you at McDonald's?"
+                                                         delegate:self
+                                                cancelButtonTitle:@"Yes"
+                                                otherButtonTitles:@"No", nil];
+                
                 [gpsPingAlert show];
                 [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
                 autoCount++;
@@ -761,6 +797,8 @@
                 entered = true;
                 
                 startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
+                
+                [self ping];
             }
         }else {
             //NSLog(@"ping count %d",pingCount);
@@ -782,6 +820,12 @@
         //NSLog(@"Pinging, option c");
         if(distance <= [currentDestination[@"radius"] doubleValue]){
             if(!entered){
+                gpsPingAlert = [[UIAlertView alloc] initWithTitle:@"Auto GPS Ping"
+                                                          message:@"Are you at McDonald's?"
+                                                         delegate:self
+                                                cancelButtonTitle:@"Yes"
+                                                otherButtonTitles:@"No", nil];
+                
                 [gpsPingAlert show];
                 [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
                 autoCount++;
@@ -789,6 +833,8 @@
                 entered = true;
                 
                 startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
+                
+                [self ping];
             }
         }else {
             //NSLog(@"ping count %c",pingCount);
@@ -807,6 +853,12 @@
         //NSLog(@"Pinging, option d");
         if(distance <= [currentDestination[@"radius"] doubleValue]){
             if(!entered){
+                
+                gpsHelloAlert = [[UIAlertView alloc] initWithTitle:@"Auto GPS Boundary Crossing Alert"
+                                                           message:@"Are you at McDonald's?"
+                                                          delegate:self
+                                                 cancelButtonTitle:@"Yes"
+                                                 otherButtonTitles:@"No", nil];
                 [gpsHelloAlert show];
                 [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
                 
@@ -814,6 +866,8 @@
                 NSLog(@"%@", autoTimeStamps);
                 autoCount++;
                 entered = true;
+                
+                [self ping];
             }
         }
         if(pingCount == 6){
@@ -825,10 +879,18 @@
         //NSLog(@"Pinging, option e");
         if(distance <= [currentDestination[@"radius"] doubleValue]){
             if(!entered){
+                gpsHelloAlert = [[UIAlertView alloc] initWithTitle:@"Auto GPS Boundary Crossing Alert"
+                                                           message:@"Are you at McDonald's?"
+                                                          delegate:self
+                                                 cancelButtonTitle:@"Yes"
+                                                 otherButtonTitles:@"No", nil];
+                
                 [gpsHelloAlert show];
                 [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
                 autoCount++;
                 entered = true;
+                
+                [self ping];
             }
         }
         if(pingCount == 6){
@@ -840,10 +902,18 @@
         //NSLog(@"Pinging, option f");
         if(distance <= [currentDestination[@"radius"] doubleValue]){
             if(!entered){
+                gpsHelloAlert = [[UIAlertView alloc] initWithTitle:@"Auto GPS Boundary Crossing Alert"
+                                                           message:@"Are you at McDonald's?"
+                                                          delegate:self
+                                                 cancelButtonTitle:@"Yes"
+                                                 otherButtonTitles:@"No", nil];
+                
                 [gpsHelloAlert show];
                 [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
                 autoCount++;
                 entered = true;
+                
+                [self ping];
             }
         }
         if(pingCount == 6){
@@ -869,6 +939,12 @@
     date = [dateFormatter stringFromDate:now];
     
     return date;
+}
+
+-(void) ping{
+    NSURL *pathURL = [NSURL fileURLWithPath : [[NSBundle mainBundle] pathForResource:@"ding" ofType:@"mp3"]];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef) pathURL, &ding);
+    AudioServicesPlaySystemSound(ding);
 }
 
 //end/////////////////////////////////////////////////////////

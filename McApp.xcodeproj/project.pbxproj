@@ -17,6 +17,7 @@
 		190C45791B55488E0038028B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C45781B55488E0038028B /* UIKit.framework */; };
 		190C457B1B5548A30038028B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C457A1B5548A30038028B /* MapKit.framework */; };
 		190C457D1B5548AC0038028B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C457C1B5548AC0038028B /* Foundation.framework */; };
+		1961CABB1BCC274C00614090 /* ding.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1961CABA1BCC274C00614090 /* ding.mp3 */; settings = {ASSET_TAGS = (); }; };
 		1972DB0B1BB1E45900C45A3E /* ResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1972DB0A1BB1E45900C45A3E /* ResultsController.m */; settings = {ASSET_TAGS = (); }; };
 		19B2E48D1BB86E17008C8974 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B2E48C1BB86E17008C8974 /* Firebase.framework */; settings = {ASSET_TAGS = (); }; };
 		19B2E48F1BB86E91008C8974 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B2E48E1BB86E91008C8974 /* libicucore.tbd */; };
@@ -43,6 +44,7 @@
 		190C45781B55488E0038028B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		190C457A1B5548A30038028B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		190C457C1B5548AC0038028B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1961CABA1BCC274C00614090 /* ding.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ding.mp3; sourceTree = "<group>"; };
 		1972DB091BB1E45900C45A3E /* ResultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultsController.h; sourceTree = "<group>"; };
 		1972DB0A1BB1E45900C45A3E /* ResultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultsController.m; sourceTree = "<group>"; };
 		19B2E48C1BB86E17008C8974 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 		190C455F1B5547370038028B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1961CABA1BCC274C00614090 /* ding.mp3 */,
 				190C45601B5547370038028B /* main.m */,
 			);
 			name = "Supporting Files";
@@ -193,6 +196,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1961CABB1BCC274C00614090 /* ding.mp3 in Resources */,
 				190C456F1B5547370038028B /* LaunchScreen.storyboard in Resources */,
 				190C456C1B5547370038028B /* Assets.xcassets in Resources */,
 				190C456A1B5547370038028B /* Main.storyboard in Resources */,

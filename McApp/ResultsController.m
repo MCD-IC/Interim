@@ -130,8 +130,11 @@ bool sent;
 -(void) saveAndSend{
     ref = [[Firebase alloc] initWithUrl:@"https://geogps-interim.firebaseio.com/"];
     usersRef = [ref childByAppendingPath: [self.nameTextField.text stringByReplacingOccurrencesOfString:@" " withString:@"_"]];
+    NSLog(@"saveandsend");
     
-    [ref observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+    [self dataToSave];
+    
+    /*[ref observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
         @try {
             if([snapshot.value[[self.nameTextField.text stringByReplacingOccurrencesOfString:@" " withString:@"_"]][[self.sessionTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""]] count] == 0){
                 NSLog(@"fill it");
@@ -153,7 +156,7 @@ bool sent;
             NSLog(@"Exception:%@",exception);
             //[self dataToSave];
         }
-    }];
+    }];*/
     
     [[NSUserDefaults standardUserDefaults] setObject:self.nameTextField.text forKey:@"rememberName"];
     [[NSUserDefaults standardUserDefaults] synchronize];

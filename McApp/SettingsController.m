@@ -278,7 +278,7 @@ BOOL inSession;
 - (IBAction)optionC:(id)sender {
     [self.view endEditing:YES];
     alertC = [[UIAlertView alloc] initWithTitle:@"Option C"
-                                          message:@"Course Boundary @ 800 meters + GPS"
+                                          message:@"Course Boundaries @ 600, 800, and 1000 meters + GPS"
                                          delegate:self
                                 cancelButtonTitle:@"OK"
                                 otherButtonTitles:@"Cancel", nil];

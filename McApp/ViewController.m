@@ -125,6 +125,14 @@
     self.readOut.text = @"To begin, go to settings and set parameters.";
 
     //[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://45.55.238.244/int-data/"]];
+    
+    /*UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
+    localNotification.alertBody = @"hi";
+    localNotification.timeZone = [NSTimeZone defaultTimeZone];
+    localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];*/
 }
 
 
@@ -133,6 +141,27 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
+    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+    if (localNotification) {
+        application.applicationIconBadgeNumber = 0;
+    }
+    
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+    }
+    
+    return YES;
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+    UIUserNotificationType types = UIUserNotificationTypeSound | UIUserNotificationTypeBadge | UIUserNotificationTypeAlert;
+    UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+    [application registerUserNotificationSettings:notificationSettings];
+    
+    application.applicationIconBadgeNumber = 0;
+}
 
 //Alerts /////////////////////////////////////////////////////////
 
@@ -352,7 +381,10 @@
 
 - (void)stopData{
     [manager stopUpdatingLocation];
-    [manager stopMonitoringForRegion:geofences];
+    
+    for(CLRegion *geofence in geofences) {
+        [manager stopMonitoringForRegion:geofence];
+    }
     self.startStop.selectedSegmentIndex = 1;
     //[self.map removeOverlay:circle];
     pingCount = 0;
@@ -386,7 +418,6 @@
                                                        delegate:self
                                               cancelButtonTitle:@"Okay"
                                               otherButtonTitles:@"Cancel", nil];
-    
     [manualConfimationAlert show];
 }
 
@@ -397,7 +428,6 @@
                                                     delegate:self
                                            cancelButtonTitle:@"Okay"
                                            otherButtonTitles:nil];
-        
         [endSessionAlert show];
     }else{
         [self performSegueWithIdentifier: @"toResults" sender: self];
@@ -419,7 +449,6 @@
 
     //[autoTimeStamps removeAllObjects];
     //[manualTimeStamps removeAllObjects];
-
     [self performSegueWithIdentifier: @"toResults" sender: self];
 }
 

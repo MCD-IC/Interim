@@ -133,7 +133,7 @@
     [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
     [[UIApplication sharedApplication] registerForRemoteNotifications];
     
-    [self sendNotification];
+    //[self sendNotification];
 }
 
 
@@ -154,9 +154,9 @@
     
     UILocalNotification *localNotification = [[UILocalNotification alloc] init];
     localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
-    localNotification.alertAction = NSLocalizedString(@"View Details", nil);
-    localNotification.alertTitle = NSLocalizedString(@"Item Due", nil);
-    localNotification.alertBody = @"hi";
+
+    localNotification.alertTitle = NSLocalizedString(@"Auto Notification", nil);
+    localNotification.alertBody = @"You are at your desitnation";
     localNotification.timeZone = [NSTimeZone defaultTimeZone];
     localNotification.soundName = UILocalNotificationDefaultSoundName;
     //localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
@@ -712,7 +712,7 @@
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region {
     if([currentOption isEqualToString:@"A"]){
         [geofenceHelloAlert show];
-        
+        [self sendNotification];
         [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGeofence-" stringByAppendingString:[@(autoCount) stringValue]]];
         autoCount++;
     }
@@ -722,7 +722,7 @@
         
         [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGeofence-" stringByAppendingString:[@(autoCount) stringValue]]];
         autoCount++;
-        
+        [self sendNotification];
         [manager startUpdatingLocation];
         pingCount = 0;
     }
@@ -735,7 +735,7 @@
                                                otherButtonTitles:@"No,", nil];
         
         [geofenceHelloCAlert show];
-        
+        [self sendNotification];
         [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGeofence-" stringByAppendingString:[@(autoCount) stringValue]]];
         autoCount++;
         
@@ -829,7 +829,7 @@
                 [gpsPingAlert show];
                 [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
                 autoCount++;
-                
+                [self sendNotification];
                 entered = true;
                 
                 startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
@@ -862,7 +862,7 @@
                 [gpsPingAlert show];
                 [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
                 autoCount++;
-                
+                [self sendNotification];
                 entered = true;
                 
                 startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
@@ -898,7 +898,7 @@
                 [gpsPingAlert show];
                 [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
                 autoCount++;
-                
+                [self sendNotification];
                 entered = true;
                 
                 startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
@@ -930,7 +930,7 @@
                                                  otherButtonTitles:@"No", nil];
                 [gpsHelloAlert show];
                 [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
-                
+                [self sendNotification];
                 
                 NSLog(@"%@", autoTimeStamps);
                 autoCount++;
@@ -958,7 +958,7 @@
                 [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
                 autoCount++;
                 entered = true;
-                
+                [self sendNotification];
                 [self ping];
             }
         }
@@ -981,7 +981,7 @@
                 [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
                 autoCount++;
                 entered = true;
-                
+                [self sendNotification];
                 [self ping];
             }
         }

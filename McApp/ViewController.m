@@ -87,6 +87,8 @@
     int manualCount;
     int autoCount;
     bool bInitLocation;
+    
+    UIBackgroundTaskIdentifier bgTask;
 }
 
 - (void)viewDidLoad {
@@ -126,13 +128,12 @@
 
     //[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://45.55.238.244/int-data/"]];
     
-    /*UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
-    localNotification.alertBody = @"hi";
-    localNotification.timeZone = [NSTimeZone defaultTimeZone];
-    localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
     
-    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];*/
+    UIUserNotificationSettings* notificationSettings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    
+    [self sendNotification];
 }
 
 
@@ -141,26 +142,61 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void) sendNotification{
+    UIUserNotificationType types = UIUserNotificationTypeBadge |
+    UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+    
+    UIUserNotificationSettings *mySettings =
+    [UIUserNotificationSettings settingsForTypes:types categories:nil];
+    
+    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    
+    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+    localNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
+    localNotification.alertAction = NSLocalizedString(@"View Details", nil);
+    localNotification.alertTitle = NSLocalizedString(@"Item Due", nil);
+    localNotification.alertBody = @"hi";
+    localNotification.timeZone = [NSTimeZone defaultTimeZone];
+    localNotification.soundName = UILocalNotificationDefaultSoundName;
+    //localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+
+}
+
+-(void)startBackgroundTask
+{
+    [self stopBackgroundTask];
+    bgTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        //in case bg task is killed faster than expected, try to start Location Service
+        NSLog(@"in background");
+    }];
+}
+
+-(void)stopBackgroundTask
+{
+    if(bgTask!=UIBackgroundTaskInvalid){
+        [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+    }
+}
+
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions{
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-    [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
     if (localNotification) {
         application.applicationIconBadgeNumber = 0;
     }
-    
-    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
-        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
-    }
+    NSLog(@"didFinish");
     
     return YES;
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
-    UIUserNotificationType types = UIUserNotificationTypeSound | UIUserNotificationTypeBadge | UIUserNotificationTypeAlert;
-    UIUserNotificationSettings *notificationSettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
-    [application registerUserNotificationSettings:notificationSettings];
-    
     application.applicationIconBadgeNumber = 0;
+    
+    NSLog(@"didRecieve");
 }
 
 //Alerts /////////////////////////////////////////////////////////
@@ -367,6 +403,8 @@
             
             [autoTimeStamps removeAllObjects];
             [manualTimeStamps removeAllObjects];
+            
+            [self startBackgroundTask];
         }
     }@catch(NSException *exception){
         gotoSettingsAlert = [[UIAlertView alloc] initWithTitle:@"Please Enter Your Settings"
@@ -389,6 +427,7 @@
     //[self.map removeOverlay:circle];
     pingCount = 0;
     [sessionTime setObject:[self dateAndTime] forKey: @"stopSession"];
+    [self stopBackgroundTask];
 }
 
 - (IBAction)startStop:(id)sender {
@@ -744,12 +783,13 @@
 
 - (void)locationManager: (nonnull CLLocationManager *)manager didUpdateToLocation: (CLLocation *)newLocation fromLocation: (CLLocation *)oldLocation{
 
-    //NSLog(@"Location %@", newLocation);
     CLLocation *currentLocation = newLocation;
     
     distance = [currentLocation distanceFromLocation:destinationPlot];
     //NSLog(@"Space %f", [currentLocation distanceFromLocation:destinationPlot]);
     //NSLog(@"distance %f m", distance);
+    
+    NSLog(@"Location %@", newLocation);
     
     if(currentLocation != nil){
         self.latitude.text = [NSString stringWithFormat:@"%.8f", currentLocation.coordinate.latitude];

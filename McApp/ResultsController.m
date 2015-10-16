@@ -55,51 +55,39 @@ bool sent;
     cellProvider = [carrier carrierName];
     
     [self.resultText setEditable:NO];
-    
-    self.resultText.text = [NSString stringWithFormat:@"%@",@{@"option": self.option,
-                                                              @"autoTimeStamp": self.autoTimeStamp,
-                                                              @"manualTimeStamp": self.manualTimeStamp,
-                                                              @"startLocation": self.startLocation,
-                                                              @"battery":self.batteryUsed,
-                                                              @"location": self.location,
-                                                              @"provider": cellProvider,
-                                                              @"phoneType": phoneType,
-                                                              @"wifiOnOff": self.wifiLabel.text,
-                                                              @"sessionTime":self.sessionTime
-                                                              }];
+    [self setDataTextfield];
+
     self.sending.hidden = true;
 }
 - (IBAction)wifiSwitch:(id)sender {
     if([sender isOn]){
         self.wifiLabel.text = @"Yes";
-        self.resultText.text = [NSString stringWithFormat:@"%@",@{@"option": self.option,
-                                                                  @"autoTimeStamp": self.autoTimeStamp,
-                                                                  @"manualTimeStamp": self.manualTimeStamp,
-                                                                  @"startLocation": self.startLocation,
-                                                                  @"battery":self.batteryUsed,
-                                                                  @"location": self.location,
-                                                                  @"provider": cellProvider,
-                                                                  @"phoneType": phoneType,
-                                                                  @"wifiOnOff": self.wifiLabel.text,
-                                                                  @"sessionTime":self.sessionTime
-                                                                  }];
+        [self setDataTextfield];
     }else{
         self.wifiLabel.text = @"No";
-        self.resultText.text = [NSString stringWithFormat:@"%@",@{@"option": self.option,
-                                                                  @"autoTimeStamp": self.autoTimeStamp,
-                                                                  @"manualTimeStamp": self.manualTimeStamp,
-                                                                  @"startLocation": self.startLocation,
-                                                                  @"battery":self.batteryUsed,
-                                                                  @"location": self.location,
-                                                                  @"provider": cellProvider,
-                                                                  @"phoneType": phoneType,
-                                                                  @"wifiOnOff": self.wifiLabel.text,
-                                                                  @"sessionTime":self.sessionTime
-                                                                  }];
+        [self setDataTextfield];
     }
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didRecognizeTapGesture:)];
     [self.resultText.superview addGestureRecognizer:tapGesture];
+}
+
+- (void) setDataTextfield{
+    @try{
+        self.resultText.text = [NSString stringWithFormat:@"%@",@{@"option": self.option,
+                                                                  @"autoTimeStamp": self.autoTimeStamp,
+                                                                  @"manualTimeStamp": self.manualTimeStamp,
+                                                                  @"startLocation": self.startLocation,
+                                                                  @"battery":self.batteryUsed,
+                                                                  @"location": self.location,
+                                                                  @"provider": cellProvider,
+                                                                  @"phoneType": phoneType,
+                                                                  @"wifiOnOff": self.wifiLabel.text,
+                                                                  @"sessionTime":self.sessionTime
+                                                                  }];
+    }@catch (NSException *exception) {
+        NSLog(@"Exception:%@",exception);
+    }
 }
 
 - (void)didRecognizeTapGesture:(UITapGestureRecognizer*)gesture{

@@ -131,11 +131,11 @@
     [[UIApplication sharedApplication] registerUserNotificationSettings:notificationSettings];
     [[UIApplication sharedApplication] registerForRemoteNotifications];
     
-    nanoClock = [[NanoClock alloc] init];
-    nanoClock.delegate = self;
-    [nanoClock setMilliseconds : 1000];
+    //nanoClock = [[NanoClock alloc] init];
+    //nanoClock.delegate = self;
+    //[nanoClock setMilliseconds : 1000];
     
-    [nanoClock start];
+    //[nanoClock start];
 }
 
 

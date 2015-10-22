@@ -15,6 +15,9 @@
 @implementation AppDelegate
 
 
+UIBackgroundTaskIdentifier bgTask;
+NSOperationQueue* operationQueue;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
@@ -24,6 +27,15 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
+        NSLog(@"\n\nGoing to resign!\n\n");
+        
+        [operationQueue waitUntilAllOperationsAreFinished];
+        
+        NSLog(@"\n\nTotally resigned!\n\n");
+        [application endBackgroundTask: bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+    }];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -32,11 +44,14 @@
 
     
     NSLog(@"\n\nRunning in the background!\n\n");
+    [self startBackgroundTask];
 
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    NSLog(@"\n\nIt's in the foreground\n\n");
+    [self stopBackgroundTask];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -45,6 +60,32 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+-(void)startBackgroundTask{
+    [self stopBackgroundTask];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        bgTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+            //in case bg task is killed faster than expected, try to start Location Service
+        
+            [operationQueue waitUntilAllOperationsAreFinished];
+            
+            [[UIApplication sharedApplication] endBackgroundTask: bgTask];
+            bgTask = UIBackgroundTaskInvalid;
+
+            NSLog(@"in background");
+        }];
+
+    });
+}
+
+-(void)stopBackgroundTask{
+    if(bgTask!=UIBackgroundTaskInvalid){
+        [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;
+        
+
+    }
 }
 
 @end

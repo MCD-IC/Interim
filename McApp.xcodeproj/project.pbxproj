@@ -18,8 +18,8 @@
 		190C45791B55488E0038028B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C45781B55488E0038028B /* UIKit.framework */; };
 		190C457B1B5548A30038028B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C457A1B5548A30038028B /* MapKit.framework */; };
 		190C457D1B5548AC0038028B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C457C1B5548AC0038028B /* Foundation.framework */; };
-		1961CABB1BCC274C00614090 /* ding.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1961CABA1BCC274C00614090 /* ding.mp3 */; settings = {ASSET_TAGS = (); }; };
 		1972DB0B1BB1E45900C45A3E /* ResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1972DB0A1BB1E45900C45A3E /* ResultsController.m */; settings = {ASSET_TAGS = (); }; };
+		199975BD1BD58AAA008A5D09 /* NanoClock.m in Sources */ = {isa = PBXBuildFile; fileRef = 199975BC1BD58AAA008A5D09 /* NanoClock.m */; settings = {ASSET_TAGS = (); }; };
 		19B2E48D1BB86E17008C8974 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B2E48C1BB86E17008C8974 /* Firebase.framework */; settings = {ASSET_TAGS = (); }; };
 		19B2E48F1BB86E91008C8974 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B2E48E1BB86E91008C8974 /* libicucore.tbd */; };
 		19B2E4911BB86EC3008C8974 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B2E4901BB86EC3008C8974 /* libc++.tbd */; };
@@ -46,9 +46,10 @@
 		190C45781B55488E0038028B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		190C457A1B5548A30038028B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		190C457C1B5548AC0038028B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1961CABA1BCC274C00614090 /* ding.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ding.mp3; sourceTree = "<group>"; };
 		1972DB091BB1E45900C45A3E /* ResultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultsController.h; sourceTree = "<group>"; };
 		1972DB0A1BB1E45900C45A3E /* ResultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultsController.m; sourceTree = "<group>"; };
+		199975BC1BD58AAA008A5D09 /* NanoClock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NanoClock.m; sourceTree = "<group>"; };
+		199975BE1BD58B7D008A5D09 /* NanoClock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NanoClock.h; sourceTree = "<group>"; };
 		19B2E48C1BB86E17008C8974 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
 		19B2E48E1BB86E91008C8974 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		19B2E4901BB86EC3008C8974 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -127,6 +128,8 @@
 				190C455F1B5547370038028B /* Supporting Files */,
 				1972DB091BB1E45900C45A3E /* ResultsController.h */,
 				1972DB0A1BB1E45900C45A3E /* ResultsController.m */,
+				199975BC1BD58AAA008A5D09 /* NanoClock.m */,
+				199975BE1BD58B7D008A5D09 /* NanoClock.h */,
 			);
 			path = McApp;
 			sourceTree = "<group>";
@@ -135,7 +138,6 @@
 			isa = PBXGroup;
 			children = (
 				1907D7C31BD1444600860C6B /* Info.plist */,
-				1961CABA1BCC274C00614090 /* ding.mp3 */,
 				190C45601B5547370038028B /* main.m */,
 			);
 			name = "Supporting Files";
@@ -204,7 +206,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1961CABB1BCC274C00614090 /* ding.mp3 in Resources */,
 				190C456F1B5547370038028B /* LaunchScreen.storyboard in Resources */,
 				190C456C1B5547370038028B /* Assets.xcassets in Resources */,
 				1907D7C41BD1444600860C6B /* Info.plist in Resources */,
@@ -223,6 +224,7 @@
 				19E206731BA765CE00615C2D /* SettingsController.m in Sources */,
 				190C45671B5547370038028B /* ViewController.m in Sources */,
 				190C45641B5547370038028B /* AppDelegate.m in Sources */,
+				199975BD1BD58AAA008A5D09 /* NanoClock.m in Sources */,
 				190C45611B5547370038028B /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

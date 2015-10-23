@@ -1,7 +1,6 @@
 #import "ViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
-#import <AudioToolbox/AudioToolBox.h>
 #import <MapKit/MapKit.h>
 #import "SettingsController.h"
 #import "ResultsController.h"
@@ -941,7 +940,9 @@
                     [gpsHelloAlert show];
                     [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
                     [self sendNotification];
-                
+                    
+                    startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
+                    
                     NSLog(@"%@", autoTimeStamps);
                     autoCount++;
                     entered = true;
@@ -972,6 +973,8 @@
                     autoCount++;
                     entered = true;
                     [self sendNotification];
+                    
+                    startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
 
                 }@catch (NSException *exception) {
                     NSLog(@"Exception:%@",exception);
@@ -999,6 +1002,8 @@
                     autoCount++;
                     entered = true;
                     [self sendNotification];
+                    
+                    startLocation = @{@"latitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.latitude], @"longitude" : [NSString stringWithFormat:@"%f", currentLocation.coordinate.longitude]};
 
                 }@catch (NSException *exception) {
                         NSLog(@"Exception:%@",exception);

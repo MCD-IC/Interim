@@ -8,10 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-#import <AudioToolbox/AudioToolBox.h>
 
 @interface ViewController : UIViewController{
-    SystemSoundID ding;
+
 }
 
 @end

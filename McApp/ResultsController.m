@@ -11,8 +11,9 @@
 #import <CoreTelephony/CTCarrier.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <sys/utsname.h>
+#import "NotesController.h"
 
-@interface ResultsController ()
+@interface ResultsController () <NotesControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UILabel *sendingLabel;
 
@@ -33,6 +34,7 @@ UIAlertView  *sendAlert;
 UIAlertView  *sessionAlert;
 NSString *cellProvider;
 NSString *phoneType;
+NSString *notes;
 
 Firebase *ref;
 Firebase *usersRef;
@@ -44,6 +46,7 @@ bool sent;
     [super viewDidLoad];
     
     self.title = @"Results";
+    notes = @"none";
 
     CTTelephonyNetworkInfo *netinfo = [[CTTelephonyNetworkInfo alloc] init];
     CTCarrier *carrier = [netinfo subscriberCellularProvider];
@@ -58,7 +61,23 @@ bool sent;
     [self setDataTextfield];
 
     self.sending.hidden = true;
+    
+    
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    NotesController *transferNotesController  = segue.destinationViewController;
+    if ([[segue identifier] isEqualToString:@"toNotes"]){
+
+        transferNotesController.delegate = self;
+    }
+}
+
+- (void)notesText:(NSString *)data{
+    NSLog(@"%@", data);
+    notes = data;
+}
+
 - (IBAction)wifiSwitch:(id)sender {
     if([sender isOn]){
         self.wifiLabel.text = @"Yes";
@@ -83,8 +102,11 @@ bool sent;
                                                                   @"provider": cellProvider,
                                                                   @"phoneType": phoneType,
                                                                   @"wifiOnOff": self.wifiLabel.text,
-                                                                  @"sessionTime":self.sessionTime
+                                                                  @"sessionTime":self.sessionTime,
+                                                                  @"notes":notes
                                                                   }];
+        
+
     }@catch (NSException *exception) {
         NSLog(@"Exception:%@",exception);
     }

@@ -18,6 +18,7 @@
 		190C45791B55488E0038028B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C45781B55488E0038028B /* UIKit.framework */; };
 		190C457B1B5548A30038028B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C457A1B5548A30038028B /* MapKit.framework */; };
 		190C457D1B5548AC0038028B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 190C457C1B5548AC0038028B /* Foundation.framework */; };
+		195F6A151BDA909C009D84C0 /* NotesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 195F6A141BDA909C009D84C0 /* NotesController.m */; settings = {ASSET_TAGS = (); }; };
 		1972DB0B1BB1E45900C45A3E /* ResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1972DB0A1BB1E45900C45A3E /* ResultsController.m */; settings = {ASSET_TAGS = (); }; };
 		199975BD1BD58AAA008A5D09 /* NanoClock.m in Sources */ = {isa = PBXBuildFile; fileRef = 199975BC1BD58AAA008A5D09 /* NanoClock.m */; settings = {ASSET_TAGS = (); }; };
 		19B2E48D1BB86E17008C8974 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B2E48C1BB86E17008C8974 /* Firebase.framework */; settings = {ASSET_TAGS = (); }; };
@@ -26,7 +27,6 @@
 		19B2E4931BB86ED2008C8974 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B2E4921BB86ED2008C8974 /* CFNetwork.framework */; };
 		19B2E4951BB86EE0008C8974 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B2E4941BB86EE0008C8974 /* Security.framework */; };
 		19B2E4971BB86EF6008C8974 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19B2E4961BB86EF6008C8974 /* SystemConfiguration.framework */; };
-		19DBE2141BB46AA400732CD8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19DBE2131BB46AA400732CD8 /* AudioToolbox.framework */; };
 		19DBE2161BB4706600732CD8 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19DBE2151BB4706600732CD8 /* AVFoundation.framework */; };
 		19E206731BA765CE00615C2D /* SettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 19E206721BA765CE00615C2D /* SettingsController.m */; };
 /* End PBXBuildFile section */
@@ -46,6 +46,8 @@
 		190C45781B55488E0038028B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		190C457A1B5548A30038028B /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		190C457C1B5548AC0038028B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		195F6A131BDA909C009D84C0 /* NotesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesController.h; sourceTree = "<group>"; };
+		195F6A141BDA909C009D84C0 /* NotesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesController.m; sourceTree = "<group>"; };
 		1972DB091BB1E45900C45A3E /* ResultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultsController.h; sourceTree = "<group>"; };
 		1972DB0A1BB1E45900C45A3E /* ResultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultsController.m; sourceTree = "<group>"; };
 		199975BC1BD58AAA008A5D09 /* NanoClock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NanoClock.m; sourceTree = "<group>"; };
@@ -73,7 +75,6 @@
 				19B2E4911BB86EC3008C8974 /* libc++.tbd in Frameworks */,
 				19B2E48F1BB86E91008C8974 /* libicucore.tbd in Frameworks */,
 				19DBE2161BB4706600732CD8 /* AVFoundation.framework in Frameworks */,
-				19DBE2141BB46AA400732CD8 /* AudioToolbox.framework in Frameworks */,
 				190C457D1B5548AC0038028B /* Foundation.framework in Frameworks */,
 				19B2E48D1BB86E17008C8974 /* Firebase.framework in Frameworks */,
 				190C457B1B5548A30038028B /* MapKit.framework in Frameworks */,
@@ -130,6 +131,8 @@
 				1972DB0A1BB1E45900C45A3E /* ResultsController.m */,
 				199975BC1BD58AAA008A5D09 /* NanoClock.m */,
 				199975BE1BD58B7D008A5D09 /* NanoClock.h */,
+				195F6A131BDA909C009D84C0 /* NotesController.h */,
+				195F6A141BDA909C009D84C0 /* NotesController.m */,
 			);
 			path = McApp;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 				19E206731BA765CE00615C2D /* SettingsController.m in Sources */,
 				190C45671B5547370038028B /* ViewController.m in Sources */,
 				190C45641B5547370038028B /* AppDelegate.m in Sources */,
+				195F6A151BDA909C009D84C0 /* NotesController.m in Sources */,
 				199975BD1BD58AAA008A5D09 /* NanoClock.m in Sources */,
 				190C45611B5547370038028B /* main.m in Sources */,
 			);

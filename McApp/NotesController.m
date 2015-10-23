@@ -7,12 +7,17 @@
 //
 
 #import "NotesController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation NotesController 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+    self.notes.layer.cornerRadius=8.0f;
+    self.notes.layer.masksToBounds=YES;
+    self.notes.layer.borderColor=[[UIColor blackColor]CGColor];
+    self.notes.layer.borderWidth= 1.0f;
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -26,5 +31,6 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
 }
+
 
 @end

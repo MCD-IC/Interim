@@ -17,18 +17,11 @@
 - (IBAction)optionE:(id)sender;
 - (IBAction)optionF:(id)sender;
 
-- (IBAction)toRomeoville:(id)sender;
-- (IBAction)toChicago:(id)sender;
-- (IBAction)toOakBrook:(id)sender;
 - (IBAction)set:(id)sender;
 
 @property (strong, nonatomic) IBOutlet UITextField *proximity;
 @property (strong, nonatomic) IBOutlet UILabel *beingMonitored;
 
-@property (strong, nonatomic) IBOutlet UITextField *customTitle;
-@property (strong, nonatomic) IBOutlet UITextField *customLatitude;
-@property (strong, nonatomic) IBOutlet UITextField *customLongitude;
-- (IBAction)enterCustomLocation:(id)sender;
 
 @end
 
@@ -41,60 +34,31 @@ UIAlertView *alertD;
 UIAlertView *alertE;
 UIAlertView *alertF;
     
-UIAlertView *alertRomeoville;
-UIAlertView *alertChicago;
-UIAlertView *alertOakBrook;
-UIAlertView *alertCustom;
-    
 UIAlertView *setAlert;
     
 IBOutlet UILabel *choosenOption;
 
-NSDictionary *destination;
-    
-NSString *setLatitude;
-NSString *setLongitude;
+NSString *radius;
 NSString *setTitle;
     
 BOOL inSession;
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Do any additional setup after loading the view.
-
     choosenOption.text = self.option;
     NSLog(self.option);
-    
-    self.beingMonitored.text = self.currentDestination[@"title"];
+
     self.proximity.text = self.currentDestination[@"radius"];
     self.title = @"Settings";
     
-    setLatitude = self.currentDestination[@"latitude"];
-    setLongitude = self.currentDestination[@"longitude"];
     setTitle = self.currentDestination[@"title"];
-    
-    if(![setTitle isEqualToString:@"Chicago"]  ){
-        if(![setTitle isEqualToString:@"Oak Brook"]  ){
-            if(![setTitle isEqualToString:@"Romeoville"]  ){
-                self.customTitle.text = setTitle;
-                self.customLatitude.text = setLatitude;
-                self.customLongitude.text = setLongitude;
-            }
-        }
-    }
     
     NSLog(self.currentDestination[@"radius"]);
     
-    self.customTitle.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"customLocation"][@"title"];
-    self.customLatitude.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"customLocation"][@"latitude"];
-    self.customLongitude.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"customLocation"][@"longitude"];
     self.proximity.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberRadius"];
-
-    
-     //NSLog(@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:@"customLocation"]);
-    
     inSession = false;
 }
 
@@ -109,7 +73,7 @@ BOOL inSession;
     
     if(![choosenOption.text isEqualToString:@""])
     [_delegate dataFromChoice: choosenOption.text];
-    [_delegate dataFromDestination: destination];
+    [_delegate dataFromDestination: radius];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -175,12 +139,11 @@ BOOL inSession;
         if (buttonIndex == 1) {
             NSLog(@"Cancel");
         }else{
-            if(![setLatitude isEqualToString:@""] && ![self.proximity.text isEqualToString:@""] && ![choosenOption.text isEqualToString:@""]){
+            if(![self.proximity.text isEqualToString:@""] && ![choosenOption.text isEqualToString:@""]){
                 NSLog(@"OK");
                 
                 @try{
-                    destination = @{@"latitude":setLatitude, @"longitude":setLongitude, @"radius":self.proximity.text, @"title":setTitle};
-                    NSLog(@"%@", destination);
+                    radius = self.proximity.text;
                     [self.navigationController popViewControllerAnimated:YES];
                     
                     [[NSUserDefaults standardUserDefaults] setObject:self.proximity.text forKey:@"rememberRadius"];
@@ -198,67 +161,13 @@ BOOL inSession;
             }
         }
     }
-    
-    if(alertView == alertRomeoville){
-        if (buttonIndex == 1) {
-            NSLog(@"Cancel");
-        }else{
-            NSLog(@"OK");
-            self.beingMonitored.text = @"Romeoville";
-            
-            setLatitude = @"41.6721034";
-            setLongitude = @"-88.0681658";
-            setTitle = @"Romeoville";
-        }
-    }
-    
-    if(alertView == alertChicago){
-        if (buttonIndex == 1) {
-            NSLog(@"Cancel");
-        }else{
-            NSLog(@"OK");
-            self.beingMonitored.text = @"Chicago";
-
-            setLatitude = @"41.8860837";
-            setLongitude = @"-87.6321842";
-            setTitle = @"Chicago";
-        }
-    }
-    
-    if(alertView == alertOakBrook){
-        if (buttonIndex == 1) {
-            NSLog(@"Cancel");
-        }else{
-            NSLog(@"OK");
-            self.beingMonitored.text = @"Oak Brook";
-            
-            setLatitude = @"41.8477231";
-            setLongitude = @"-87.9476483";
-            setTitle = @"Oak Brook";
-        }
-    }
-    
-    if(alertView == alertCustom){
-        if (buttonIndex == 1) {
-            NSLog(@"Cancel");
-        }else{
-            NSLog(@"OK");
-            self.beingMonitored.text = self.customTitle.text;
-            
-            setLatitude = self.customLatitude.text;
-            setLongitude = self.customLongitude.text;
-            setTitle = self.customTitle.text;
-            
-            [[NSUserDefaults standardUserDefaults] setObject:@{@"title":self.customTitle.text,@"latitude":self.customLatitude.text,@"longitude":self.customLongitude.text} forKey:@"customLocation"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-    }
 }
 
 - (IBAction)optionA:(id)sender {
     [self.view endEditing:YES];
+    
     alertA = [[UIAlertView alloc] initWithTitle:@"Option A"
-                                          message:@"Initial GPS Location + Geofences (Regions)"
+                                          message:@""
                                          delegate:self
                                 cancelButtonTitle:@"OK"
                                 otherButtonTitles:@"Cancel", nil];
@@ -268,7 +177,7 @@ BOOL inSession;
 - (IBAction)optionB:(id)sender {
     [self.view endEditing:YES];
     alertB = [[UIAlertView alloc] initWithTitle:@"Option B"
-                                        message:@"Initial GPS Location + Geofences (Regions) + GPS Verification"
+                                        message:@""
                                          delegate:self
                                 cancelButtonTitle:@"OK"
                                 otherButtonTitles:@"Cancel", nil];
@@ -278,7 +187,7 @@ BOOL inSession;
 - (IBAction)optionC:(id)sender {
     [self.view endEditing:YES];
     alertC = [[UIAlertView alloc] initWithTitle:@"Option C"
-                                          message:@"Course Boundaries @ 600, 800, and 1000 meters + GPS"
+                                          message:@""
                                          delegate:self
                                 cancelButtonTitle:@"OK"
                                 otherButtonTitles:@"Cancel", nil];
@@ -309,39 +218,11 @@ BOOL inSession;
 - (IBAction)optionF:(id)sender {
     [self.view endEditing:YES];
     alertF = [[UIAlertView alloc] initWithTitle:@"Option F"
-                                        message:@"Standard Location Service - Nearest Hundred Meters"
+                                        message:@""
                                        delegate:self
                               cancelButtonTitle:@"OK"
                               otherButtonTitles:@"Cancel", nil];
     [alertF show];
-}
-
-- (IBAction)toRomeoville:(id)sender {
-    
-    alertRomeoville = [[UIAlertView alloc] initWithTitle:@"Romeoville"
-                                        message:@""
-                                       delegate:self
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:@"Cancel", nil];
-    [alertRomeoville show];
-}
-
-- (IBAction)toChicago:(id)sender {
-    alertChicago = [[UIAlertView alloc] initWithTitle:@"Chicago"
-                                        message:@""
-                                       delegate:self
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:@"Cancel", nil];
-    [alertChicago show];
-}
-
-- (IBAction)toOakBrook:(id)sender {
-    alertOakBrook = [[UIAlertView alloc] initWithTitle:@"Oak Brook"
-                                        message:@""
-                                       delegate:self
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:@"Cancel", nil];
-    [alertOakBrook show];
 }
 
 - (IBAction)set:(id)sender {
@@ -352,18 +233,5 @@ BOOL inSession;
                                     otherButtonTitles:@"No", nil];
     [setAlert show];
 }
-- (IBAction)enterCustomLocation:(id)sender {
-    alertCustom = [[UIAlertView alloc] initWithTitle:self.customTitle.text
-                                               message:@""
-                                              delegate:self
-                                     cancelButtonTitle:@"OK"
-                                     otherButtonTitles:@"Cancel", nil];
-    [alertCustom show];
-}
 
--(void) clearCustom{
-    self.customTitle.text = @"";
-    self.customLatitude.text = @"";
-    self.customLongitude.text = @"";
-}
 @end

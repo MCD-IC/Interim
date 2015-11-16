@@ -13,7 +13,7 @@
 @required
 
 - (void)dataFromChoice:(NSString *)data;
-- (void)dataFromDestination:(NSDictionary *)data;
+- (void)dataFromDestination:(NSString *)data;
 
 @end
 

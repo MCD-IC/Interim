@@ -23,8 +23,9 @@
 @property (nonatomic, retain) NSMutableDictionary *sessionTime;
 
 @property (nonatomic, retain) NSString *batteryUsed;
-@property (nonatomic, retain) NSString *option;
-@property (nonatomic, retain) NSDictionary *location;
+@property (nonatomic, retain) NSString *options;
+@property (nonatomic, retain) NSString *location;
+@property (nonatomic, retain) NSString *numOfStores;
 @property (nonatomic, retain) NSDictionary *startLocation;
 
 @property (nonatomic, strong) id<ResultsControllerDelegate> delegate;

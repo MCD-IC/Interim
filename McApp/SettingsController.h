@@ -19,10 +19,6 @@
 
 @interface SettingsController : ViewController
 
-@property (nonatomic, retain) NSString *option;
-@property (nonatomic, retain) NSString *currentProximity;
-@property (nonatomic, retain) NSDictionary *currentDestination;
-
 @property (nonatomic, weak) id<SettingsControllerDelegate> delegate;
 
 @end

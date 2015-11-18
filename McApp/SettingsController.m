@@ -14,52 +14,57 @@
 - (IBAction)optionB:(id)sender;
 - (IBAction)optionC:(id)sender;
 - (IBAction)optionD:(id)sender;
-- (IBAction)optionE:(id)sender;
-- (IBAction)optionF:(id)sender;
-
-- (IBAction)set:(id)sender;
 
 @property (strong, nonatomic) IBOutlet UITextField *proximity;
 @property (strong, nonatomic) IBOutlet UILabel *beingMonitored;
 
+@property (strong, nonatomic) IBOutlet UILabel *distance1;
+@property (strong, nonatomic) IBOutlet UILabel *distance2;
+@property (strong, nonatomic) IBOutlet UILabel *numMCD;
+
+@property (strong, nonatomic) IBOutlet UISlider *secondSlider;
+@property (strong, nonatomic) IBOutlet UISlider *fiveToTenSlider;
+@property (strong, nonatomic) IBOutlet UISlider *mcdSliderValue;
+
+- (IBAction)timeSlider1:(id)sender;
+- (IBAction)timeSlider5:(id)sender;
+- (IBAction)mcdSlider:(id)sender;
 
 @end
 
 @implementation SettingsController{
-
-UIAlertView *alertA;
-UIAlertView *alertB;
-UIAlertView *alertC;
-UIAlertView *alertD;
-UIAlertView *alertE;
-UIAlertView *alertF;
-    
-UIAlertView *setAlert;
     
 IBOutlet UILabel *choosenOption;
-
 NSString *radius;
 NSString *setTitle;
     
 BOOL inSession;
+int incrementation;
     
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    choosenOption.text = self.option;
-    NSLog(self.option);
-
-    self.proximity.text = self.currentDestination[@"radius"];
+    choosenOption.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberOption"];
     self.title = @"Settings";
-    
-    setTitle = self.currentDestination[@"title"];
-    
-    NSLog(self.currentDestination[@"radius"]);
-    
     self.proximity.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberRadius"];
     inSession = false;
+    
+    self.distance1.text = [NSString stringWithFormat:@"%@%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberDistance1"], @"m"];
+    self.distance2.text = [NSString stringWithFormat:@"%@%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberDistance2"], @"m"];
+    self.numMCD.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberNumMCD"];
+    
+    incrementation = 500;
+    
+    self.secondSlider.value = [[[NSUserDefaults standardUserDefaults] stringForKey:@"rememberDistance1"] intValue]/incrementation;
+    self.fiveToTenSlider.value = [[[NSUserDefaults standardUserDefaults] stringForKey:@"rememberDistance2"] intValue]/incrementation;
+    self.mcdSliderValue.value = [[[NSUserDefaults standardUserDefaults] stringForKey:@"rememberNumMCD"] intValue];
+    
+    self.secondSlider.minimumValue = 1;
+    self.secondSlider.maximumValue = 10000/incrementation;
+    
+    self.fiveToTenSlider.minimumValue = 1;
+    self.fiveToTenSlider.maximumValue = 20000/incrementation;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -69,169 +74,61 @@ BOOL inSession;
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    //NSLog(@"Go");
+
+    [[NSUserDefaults standardUserDefaults] setObject:self.proximity.text forKey:@"rememberRadius"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
-    if(![choosenOption.text isEqualToString:@""])
     [_delegate dataFromChoice: choosenOption.text];
-    [_delegate dataFromDestination: radius];
+    [_delegate dataFromDestination: [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberRadius"]];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if(alertView == alertA){
-        if (buttonIndex == 1) {
-            NSLog(@"Cancel");
-        }else{
-            NSLog(@"OK");
-            choosenOption.text = @"A";
-        }
-    }
-
-    if(alertView == alertB){
-        if (buttonIndex == 1) {
-            NSLog(@"Cancel");
-        }else{
-            NSLog(@"OK");
-            choosenOption.text = @"B";
-        }
-    }
-    
-    if(alertView == alertC){
-        if (buttonIndex == 1) {
-            NSLog(@"Cancel");
-        }else{
-            NSLog(@"OK");
-            choosenOption.text = @"C";
-        }
-    }
-
-    if(alertView == alertD){
-        if (buttonIndex == 1) {
-            NSLog(@"Cancel");
-        }else{
-            NSLog(@"OK");
-            choosenOption.text = @"D";
-        }
-    }
-    
-    if(alertView == alertE){
-        if (buttonIndex == 1) {
-            NSLog(@"Cancel");
-        }else{
-            NSLog(@"OK");
-            choosenOption.text = @"E";
-        }
-    }
-    
-    if(alertView == alertF){
-        if (buttonIndex == 1) {
-            NSLog(@"Cancel");
-        }else{
-            NSLog(@"OK");
-            choosenOption.text = @"F";
-        }
-    }
- 
-    if(alertView == setAlert){
-        if (buttonIndex == 1) {
-            NSLog(@"Cancel");
-        }else{
-            if(![self.proximity.text isEqualToString:@""] && ![choosenOption.text isEqualToString:@""]){
-                NSLog(@"OK");
-                
-                @try{
-                    radius = self.proximity.text;
-                    [self.navigationController popViewControllerAnimated:YES];
-                    
-                    [[NSUserDefaults standardUserDefaults] setObject:self.proximity.text forKey:@"rememberRadius"];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                }@catch(NSException *exception){
-                  
-                }
-            }else{
-                alertA = [[UIAlertView alloc] initWithTitle:@"Please set all parameters: Location, Proximity, Option"
-                                                    message:@""
-                                                   delegate:self
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-                [alertA show];
-            }
-        }
-    }
+-(void) setOption :(NSString *)option{
+    choosenOption.text = option;
+    [[NSUserDefaults standardUserDefaults] setObject:option forKey:@"rememberOption"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)optionA:(id)sender {
     [self.view endEditing:YES];
-    
-    alertA = [[UIAlertView alloc] initWithTitle:@"Option A"
-                                          message:@""
-                                         delegate:self
-                                cancelButtonTitle:@"OK"
-                                otherButtonTitles:@"Cancel", nil];
-    [alertA show];
+    [self setOption: @"A"];
 }
 
 - (IBAction)optionB:(id)sender {
     [self.view endEditing:YES];
-    alertB = [[UIAlertView alloc] initWithTitle:@"Option B"
-                                        message:@""
-                                         delegate:self
-                                cancelButtonTitle:@"OK"
-                                otherButtonTitles:@"Cancel", nil];
-    [alertB show];
+    [self setOption: @"B"];
 }
 
 - (IBAction)optionC:(id)sender {
     [self.view endEditing:YES];
-    alertC = [[UIAlertView alloc] initWithTitle:@"Option C"
-                                          message:@""
-                                         delegate:self
-                                cancelButtonTitle:@"OK"
-                                otherButtonTitles:@"Cancel", nil];
-    [alertC show];
+    [self setOption: @"C"];
 }
 
 - (IBAction)optionD:(id)sender {
     [self.view endEditing:YES];
-    alertD = [[UIAlertView alloc] initWithTitle:@"Option D"
-                                          message:@"Standard Location Service - Best"
-                                         delegate:self
-                                cancelButtonTitle:@"OK"
-                                otherButtonTitles:@"Cancel", nil];
-    [alertD show];
+    [self setOption: @"D"];
 }
 
-- (IBAction)optionE:(id)sender {
-    [self.view endEditing:YES];
-    alertE = [[UIAlertView alloc] initWithTitle:@"Option E"
-                                        message:@"Standard Location Service - Nearest Ten Meters"
-                                       delegate:self
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:@"Cancel", nil];
-    [alertE show];
 
+- (IBAction)timeSlider1:(id)sender {
+    self.distance1.text = [NSString stringWithFormat:@"%d%@", (int)self.secondSlider.value * incrementation, @"m"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%d", (int)self.secondSlider.value * incrementation] forKey:@"rememberDistance1"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (IBAction)optionF:(id)sender {
-    [self.view endEditing:YES];
-    alertF = [[UIAlertView alloc] initWithTitle:@"Option F"
-                                        message:@""
-                                       delegate:self
-                              cancelButtonTitle:@"OK"
-                              otherButtonTitles:@"Cancel", nil];
-    [alertF show];
+- (IBAction)timeSlider5:(id)sender {
+    self.distance2.text = [NSString stringWithFormat:@"%d%@", (int)self.fiveToTenSlider.value * incrementation, @"m"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%d", (int)self.fiveToTenSlider.value * incrementation]  forKey:@"rememberDistance2"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (IBAction)set:(id)sender {
-    setAlert = [[UIAlertView alloc] initWithTitle:@"ALL SET?"
-                                              message:@""
-                                             delegate:self
-                                    cancelButtonTitle:@"Yes"
-                                    otherButtonTitles:@"No", nil];
-    [setAlert show];
+- (IBAction)mcdSlider:(id)sender {
+    self.numMCD.text = [NSString stringWithFormat:@"%d", (int)self.mcdSliderValue.value];
+    [[NSUserDefaults standardUserDefaults] setObject:self.numMCD.text forKey:@"rememberNumMCD"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

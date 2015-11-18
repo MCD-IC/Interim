@@ -61,8 +61,6 @@ bool sent;
     [self setDataTextfield];
 
     self.sending.hidden = true;
-    
-    
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
@@ -76,6 +74,7 @@ bool sent;
 - (void)notesText:(NSString *)data{
     NSLog(@"%@", data);
     notes = data;
+    [self setDataTextfield];
 }
 
 - (IBAction)wifiSwitch:(id)sender {
@@ -93,7 +92,7 @@ bool sent;
 
 - (void) setDataTextfield{
     @try{
-        self.resultText.text = [NSString stringWithFormat:@"%@",@{@"option": self.option,
+        self.resultText.text = [NSString stringWithFormat:@"%@",@{@"option": self.options,
                                                                   @"autoTimeStamp": self.autoTimeStamp,
                                                                   @"manualTimeStamp": self.manualTimeStamp,
                                                                   @"startLocation": self.startLocation,
@@ -103,7 +102,8 @@ bool sent;
                                                                   @"phoneType": phoneType,
                                                                   @"wifiOnOff": self.wifiLabel.text,
                                                                   @"sessionTime":self.sessionTime,
-                                                                  @"notes":notes
+                                                                  @"notes":notes,
+                                                                  @"numberOfStores":self.numOfStores
                                                                   }];
         
 
@@ -134,7 +134,6 @@ bool sent;
     }else{
         [self beforeSendAlert];
     }
-
 }
 
 -(void) saveAndSend{
@@ -185,8 +184,9 @@ bool sent;
     
     
 -(void) dataToSave{
+    if([notes length] < 1) notes = @"none";
     sessionData = @{[self.sessionTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""]: @{
-                    @"option": self.option,
+                    @"option": self.options,
                     @"autoTimeStamp": self.autoTimeStamp,
                     @"battery":self.batteryUsed,
                     @"manualTimeStamp": self.manualTimeStamp,
@@ -195,7 +195,9 @@ bool sent;
                     @"provider": cellProvider,
                     @"phoneType": phoneType,
                     @"wifiOnOff": self.wifiLabel.text,
-                    @"sessionTime":self.sessionTime
+                    @"sessionTime":self.sessionTime,
+                    @"notes":notes,
+                    @"numberOfStores":self.numOfStores
                     }};
 
     NSLog(@"%@", sessionData);

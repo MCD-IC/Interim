@@ -41,7 +41,6 @@ double tick;// tick is based on musical beats per minute. use setMilliseconds me
     while (_running) {
         if (currentTime >= nextTime) {
             [self.delegate timeKeeper];
-            
             nextTime += interval / tick;
         }
         

@@ -102,8 +102,7 @@ bool sent;
                                                                   @"phoneType": phoneType,
                                                                   @"wifiOnOff": self.wifiLabel.text,
                                                                   @"sessionTime":self.sessionTime,
-                                                                  @"notes":notes,
-                                                                  @"numberOfStores":self.numOfStores
+                                                                  @"notes":notes
                                                                   }];
         
 
@@ -196,8 +195,7 @@ bool sent;
                     @"phoneType": phoneType,
                     @"wifiOnOff": self.wifiLabel.text,
                     @"sessionTime":self.sessionTime,
-                    @"notes":notes,
-                    @"numberOfStores":self.numOfStores
+                    @"notes":notes
                     }};
 
     NSLog(@"%@", sessionData);

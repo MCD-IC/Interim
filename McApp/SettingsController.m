@@ -20,15 +20,12 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *distance1;
 @property (strong, nonatomic) IBOutlet UILabel *distance2;
-@property (strong, nonatomic) IBOutlet UILabel *numMCD;
 
 @property (strong, nonatomic) IBOutlet UISlider *secondSlider;
 @property (strong, nonatomic) IBOutlet UISlider *fiveToTenSlider;
-@property (strong, nonatomic) IBOutlet UISlider *mcdSliderValue;
 
 - (IBAction)timeSlider1:(id)sender;
 - (IBAction)timeSlider5:(id)sender;
-- (IBAction)mcdSlider:(id)sender;
 
 @end
 
@@ -52,14 +49,12 @@ int incrementation;
     
     self.distance1.text = [NSString stringWithFormat:@"%@%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberDistance1"], @"m"];
     self.distance2.text = [NSString stringWithFormat:@"%@%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberDistance2"], @"m"];
-    self.numMCD.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberNumMCD"];
-    
+   
     incrementation = 500;
     
     self.secondSlider.value = [[[NSUserDefaults standardUserDefaults] stringForKey:@"rememberDistance1"] intValue]/incrementation;
     self.fiveToTenSlider.value = [[[NSUserDefaults standardUserDefaults] stringForKey:@"rememberDistance2"] intValue]/incrementation;
-    self.mcdSliderValue.value = [[[NSUserDefaults standardUserDefaults] stringForKey:@"rememberNumMCD"] intValue];
-    
+
     self.secondSlider.minimumValue = 1;
     self.secondSlider.maximumValue = 10000/incrementation;
     
@@ -125,10 +120,5 @@ int incrementation;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (IBAction)mcdSlider:(id)sender {
-    self.numMCD.text = [NSString stringWithFormat:@"%d", (int)self.mcdSliderValue.value];
-    [[NSUserDefaults standardUserDefaults] setObject:self.numMCD.text forKey:@"rememberNumMCD"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
 
 @end

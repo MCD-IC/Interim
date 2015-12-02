@@ -169,7 +169,7 @@
     [addressData removeAllObjects];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    NSString *CLServices = [NSString stringWithFormat:@"%@%@%@%@%@%@",@"http://apidev-us.mcd.com:9002/v3/restaurant/location?filter=geodistance&coords=", startLocation[@"latitude"], @",", startLocation[@"longitude"], @"&distance=10&market=US&languageName=en-us&size=", [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberNumMCD"]];
+    NSString *CLServices = [NSString stringWithFormat:@"%@%@%@%@%@%@",@"http://apidev-us.mcd.com:9002/v3/restaurant/location?filter=geodistance&coords=", startLocation[@"latitude"], @",", startLocation[@"longitude"], @"&distance=50&market=US&languageName=en-us&size=", [[NSUserDefaults standardUserDefaults] stringForKey:@"rememberNumMCD"]];
     
     [request setURL:[NSURL URLWithString:CLServices]];
     [request setValue:@"VwWmfqPCQAFje0gIobXptGrrFnQM190t" forHTTPHeaderField:@"mcd_apikey"];

@@ -82,7 +82,6 @@
     bool haveResults;
 
     //Location
-    NSArray *jsonLocation;
     NSDictionary *addressData;
     NSMutableArray *coordinateData;
     NSMutableArray *Data;
@@ -569,33 +568,34 @@
     
     distance = [currentLocation distanceFromLocation:destinationPlot];
 
-    for (int i = 0; i < [jsonLocation count]; i++) {
-        CLLocation *mcDonaldsLocation = [[CLLocation alloc] initWithLatitude:[[jsonLocation objectAtIndex:i][@"address"][@"location"][@"lat"] doubleValue] longitude:[[jsonLocation objectAtIndex:i][@"address"][@"location"][@"lon"] doubleValue]];
-        
-        shortestDistance = MIN(shortestDistance, [currentLocation distanceFromLocation:mcDonaldsLocation]);
-        //NSLog(@"%f", shortestDistance);
-        if([currentLocation distanceFromLocation:mcDonaldsLocation] < [radius doubleValue]){
-            if(!entered){
-                @try{
-                    gpsHelloAlert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@ %@", @"Auto Boundary Crossing Alert:",[jsonLocation objectAtIndex:i][@"address"][@"addressLine1"]]
-                                                               message:@"Are you at McDonald's?"
-                                                              delegate:self
-                                                     cancelButtonTitle:@"Yes"
-                                                     otherButtonTitles:@"No", nil];
-                    [gpsHelloAlert show];
-                    [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
-                    [self sendNotification];
-                    location = [jsonLocation objectAtIndex:i][@"address"][@"addressLine1"];
-                    autoCount++;
-                    haveResults = true;
-                    entered = true;
-                    
-                }@catch (NSException *exception) {
-                    NSLog(@"Exception:%@",exception);
-                }
+    
+
+    CLLocation *mcDonaldsLocation = [[CLLocation alloc] initWithLatitude:[addressData[@"results"][0][@"geometry"][@"location"][@"lat"] doubleValue] longitude:[addressData[@"results"][0][@"geometry"][@"location"][@"lng"] doubleValue]];
+    
+    shortestDistance = MIN(shortestDistance, [currentLocation distanceFromLocation:mcDonaldsLocation]);
+
+    if([currentLocation distanceFromLocation:mcDonaldsLocation] < [radius doubleValue]){
+        if(!entered){
+            @try{
+                gpsHelloAlert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@ %@", @"Auto Boundary Crossing Alert:", self.addressField.text]
+                                                           message:@"Are you at McDonald's?"
+                                                          delegate:self
+                                                 cancelButtonTitle:@"Yes"
+                                                 otherButtonTitles:@"No", nil];
+                [gpsHelloAlert show];
+                [autoTimeStamps setObject:[self dateAndTime] forKey: [@"autoGPS-" stringByAppendingString:[@(autoCount) stringValue]]];
+                [self sendNotification];
+                location = self.addressField.text;
+                autoCount++;
+                haveResults = true;
+                entered = true;
+                
+            }@catch (NSException *exception) {
+                NSLog(@"Exception:%@",exception);
             }
         }
     }
+
     
     if(currentLocation != nil){
         self.latitude.text = [NSString stringWithFormat:@"%.8f", currentLocation.coordinate.latitude];

@@ -32,7 +32,7 @@
 
 /* Begin PBXFileReference section */
 		1907D7C31BD1444600860C6B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		190C455C1B5547370038028B /* McApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = McApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		190C455C1B5547370038028B /* McApp International.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "McApp International.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		190C45601B5547370038028B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		190C45621B5547370038028B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		190C45631B5547370038028B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -106,7 +106,7 @@
 		190C455D1B5547370038028B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				190C455C1B5547370038028B /* McApp.app */,
+				190C455C1B5547370038028B /* McApp International.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -158,7 +158,7 @@
 			);
 			name = McApp;
 			productName = McApp;
-			productReference = 190C455C1B5547370038028B /* McApp.app */;
+			productReference = 190C455C1B5547370038028B /* McApp International.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -347,8 +347,8 @@
 					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = McDonalds.McApp;
-				PRODUCT_NAME = McApp;
+				PRODUCT_BUNDLE_IDENTIFIER = McDonalds.McAppInternational;
+				PRODUCT_NAME = "McApp International";
 			};
 			name = Debug;
 		};
@@ -370,8 +370,8 @@
 					"$(PROJECT_DIR)",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = McDonalds.McApp;
-				PRODUCT_NAME = McApp;
+				PRODUCT_BUNDLE_IDENTIFIER = McDonalds.McAppInternational;
+				PRODUCT_NAME = "McApp International";
 			};
 			name = Release;
 		};
